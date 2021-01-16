@@ -9,7 +9,16 @@ const routes = [
     name: "home",
     component: () => import("../views/Home.vue"),
     meta: {
-      title: "Home",
+      title: "home",
+      layout: "default"
+    }
+  },
+  {
+    path: "/settings",
+    name: "home",
+    component: () => import("../views/Settings.vue"),
+    meta: {
+      title: "settings",
       layout: "default"
     }
   }

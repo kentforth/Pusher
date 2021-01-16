@@ -1,17 +1,17 @@
 <template>
   <div class="default">
     <Sidebar />
-    <TabPanel />
     <router-view />
+    <Chat />
   </div>
 </template>
 
 <script>
 import Sidebar from "../components/Sidebar";
-import TabPanel from "../components/TabPanel";
+import Chat from "../components/Chat";
 export default {
   name: "Default",
-  components: { TabPanel, Sidebar }
+  components: { Chat, Sidebar }
 };
 </script>
 

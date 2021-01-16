@@ -1,12 +1,12 @@
 <template>
-  <div class="TabPanel">
-    <h2>Tab Panel</h2>
+  <div class="chat">
+    <h2>Chat</h2>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TabPanel"
+  name: "Chat"
 };
 </script>
 
