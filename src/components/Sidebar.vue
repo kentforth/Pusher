@@ -32,8 +32,9 @@ export default {
   padding: rem(20px) rem(15px);
   background-color: $dark-gray;
   display: grid;
-  align-items: center;
+  align-items: start;
   grid-template-columns: 1fr;
+  grid-template-rows: 200px 1fr;
   justify-content: center;
   justify-items: center;
 }

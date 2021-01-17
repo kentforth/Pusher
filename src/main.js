@@ -7,10 +7,10 @@ import "./assets/scss/styles.scss";
 
 /*FONT AWESOME*/
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faComments, faCog } from "@fortawesome/free-solid-svg-icons";
+import { faComments, faCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faComments, faCog);
+library.add(faComments, faCog, faSearch);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -1,7 +1,10 @@
 <template>
   <div class="default">
     <Sidebar />
-    <router-view />
+    <div class="view">
+      <router-view />
+    </div>
+
     <Chat />
   </div>
 </template>
@@ -18,5 +21,11 @@ export default {
 <style scoped lang="scss">
 .default {
   display: flex;
+}
+
+.view {
+  height: 100vh;
+  background-color: $secondary;
+  padding: 1em 0.8em;
 }
 </style>
