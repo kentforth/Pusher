@@ -15,11 +15,29 @@ const routes = [
   },
   {
     path: "/settings",
-    name: "home",
+    name: "settings",
     component: () => import("../views/Settings.vue"),
     meta: {
       title: "settings",
       layout: "default"
+    }
+  },
+  {
+    path: "/signin",
+    name: "signin",
+    component: () => import("../views/SignIn"),
+    meta: {
+      title: "Sign In",
+      layout: "empty"
+    }
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: () => import("../views/SignUp"),
+    meta: {
+      title: "Sign Up",
+      layout: "empty"
     }
   }
 ];
