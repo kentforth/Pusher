@@ -12,7 +12,7 @@ export default {
 
 <style scoped lang="scss">
 .recent-user {
-  padding: rem(15px) rem(20px);
+  padding: rem(10px) rem(20px);
   display: grid;
   align-items: start;
   justify-content: center;
@@ -52,6 +52,40 @@ export default {
   }
 }
 
+.typing {
+  display: flex;
+  align-items: flex-end;
+  span {
+    font-size: $font-size / 1.1;
+    color: $primary;
+    margin: 5px 5px 5px 0;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-right: 5px;
+    background-color: $primary;
+    margin-bottom: 5px;
+  }
+
+  .dot:nth-child(2) {
+    animation: movingTop duration(0.5) ease-in-out infinite;
+    animation-direction: alternate;
+  }
+
+  .dot:nth-child(3) {
+    animation: movingTop duration(0.6) ease-in-out infinite;
+    animation-direction: alternate;
+  }
+
+  .dot:nth-child(4) {
+    animation: movingTop duration(0.7) ease-in-out infinite;
+    animation-direction: alternate;
+  }
+}
+
 .time {
   display: flex;
   justify-content: flex-end;
@@ -67,5 +101,21 @@ export default {
   box-shadow: 0px 0px 3px 1px #000000;
   background-color: $green;
   z-index: 999;
+}
+
+/*ANIMATION*/
+@keyframes movingTop {
+  0%,
+  30% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-10px);
+  }
 }
 </style>

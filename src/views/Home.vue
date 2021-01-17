@@ -19,7 +19,13 @@
 
         <div class="info">
           <h3>{{ user.name }}</h3>
-          <p>{{ user.lastMessage }}</p>
+          <p v-if="!user.typing">{{ user.lastMessage }}</p>
+          <div class="typing" v-else>
+            <span>typing</span>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
         </div>
         <div class="time">
           <span>12:12: AM</span>
@@ -43,6 +49,7 @@ export default {
         lastMessage: "Hey! I am there",
         status: "active",
         time: "12:25",
+        typing: true,
         image: require("../assets/images/test/image1.jpg")
       },
       {
@@ -51,6 +58,7 @@ export default {
         lastMessage: "Mystic main",
         status: "inactive",
         time: "14:21",
+        typing: false,
         image: require("../assets/images/test/image2.jpg")
       },
       {
@@ -59,6 +67,7 @@ export default {
         lastMessage: "Fizics ocure",
         status: "active",
         time: "10:47",
+        typing: true,
         image: require("../assets/images/test/image3.jpg")
       },
       {
@@ -67,6 +76,7 @@ export default {
         lastMessage: "Should I return back to office?",
         status: "inactive",
         time: "16:32",
+        typing: false,
         image: require("../assets/images/test/image4.jpg")
       },
       {
@@ -75,6 +85,7 @@ export default {
         lastMessage: "change stuff for tomorrow",
         status: "active",
         time: "16:32",
+        typing: true,
         image: require("../assets/images/test/image5.jpg")
       }
     ]
