@@ -10,6 +10,9 @@ Vue.use(Vuelidate);
 
 import firebase from "firebase/app";
 
+import VueToast from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
+
 /*FONT AWESOME*/
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -35,6 +38,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 library.add(faComments, faCog, faSearch, faUser, faLock, faEnvelope);
+Vue.use(VueToast, {
+  duration: 2500,
+  type: "default"
+});
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

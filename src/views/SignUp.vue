@@ -127,6 +127,7 @@ export default {
       if (this.$v.form.$error) {
         return;
       }
+      this.error = "";
       this.SHOW_SPINNER();
       firebase
         .auth()
@@ -135,8 +136,11 @@ export default {
           localStorage.setItem("isLogged", "true");
           this.HIDE_SPINNER();
           this.$router.push("/");
+          this.$toast.success("Congratulations! You have been registered", {
+            duration: 2500,
+            position: "bottom"
+          });
         })
-
         .catch(error => {
           this.error = error;
           this.HIDE_SPINNER();
