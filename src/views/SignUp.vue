@@ -133,7 +133,6 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.form.email, this.form.password)
         .then(() => {
-          localStorage.setItem("isLogged", "true");
           this.HIDE_SPINNER();
           this.$router.push("/");
           this.$toast.success("Congratulations! You have been registered", {

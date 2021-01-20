@@ -9,6 +9,7 @@ import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
 import firebase from "firebase/app";
+import "firebase/auth";
 
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
@@ -21,7 +22,8 @@ import {
   faSearch,
   faUser,
   faLock,
-  faEnvelope
+  faEnvelope,
+  faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -37,7 +39,16 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-library.add(faComments, faCog, faSearch, faUser, faLock, faEnvelope);
+library.add(
+  faComments,
+  faCog,
+  faSearch,
+  faUser,
+  faLock,
+  faEnvelope,
+  faSignOutAlt
+);
+
 Vue.use(VueToast, {
   duration: 2500,
   type: "default"
@@ -47,8 +58,15 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+let app;
+firebase.auth().onAuthStateChanged(user => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount("#app");
+  } else {
+    console.log(user);
+  }
+});

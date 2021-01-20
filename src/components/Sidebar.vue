@@ -1,9 +1,11 @@
 <template>
   <div class="sidebar">
+    <!--LOGO-->
     <div class="logo">
       <img src="../assets/images/icons/logo-icon.svg" alt="logo" />
     </div>
 
+    <!--LINKS-->
     <div class="links">
       <div class="link-item">
         <router-link to="/">
@@ -16,12 +18,33 @@
         </router-link>
       </div>
     </div>
+
+    <div class="sign-out">
+      <font-awesome-icon
+        icon="sign-out-alt"
+        class="icon fa-sign-out"
+        @click="signOut"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import firebase from "firebase/app";
+import "firebase/auth";
+
 export default {
-  name: "Sidebar"
+  name: "Sidebar",
+  methods: {
+    async signOut() {
+      try {
+        await firebase.auth().signOut();
+        this.$router.replace({ name: "signin" });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 };
 </script>
 
@@ -71,5 +94,12 @@ export default {
 
 .sidebar img {
   width: 40%;
+}
+
+.fa-sign-out {
+  font-size: rem(35px);
+  transform-origin: center;
+  transform: rotate(180deg);
+  cursor: pointer;
 }
 </style>
