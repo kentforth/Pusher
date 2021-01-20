@@ -56,7 +56,7 @@ span {
 
 input {
   background-color: $link-background;
-  border:none;
+  border: $link-background;
   width: 100%;
   outline: none;
   border-radius: rem(4px);
@@ -86,6 +86,29 @@ input::placeholder {
 .status-inactive {
   background-color: transparent;
   box-shadow: none;
+}
+
+.error {
+  color: $error;
+}
+
+.input-error {
+  border: 1px solid $error;
+}
+
+.showError {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.hideError {
+  opacity: 0;
+}
+
+.spinner {
+  position: absolute;
+  top: 90%;
+  left: 50%;
 }
 
 

@@ -1,5 +1,3 @@
-
-
 module.exports = {
   devServer: {
     port: 4000
@@ -8,7 +6,7 @@ module.exports = {
     loaderOptions: {
       sass: {
         prependData: `@import "@/assets/scss/styles.scss";`
-      },
-    },
+      }
+    }
   }
 };

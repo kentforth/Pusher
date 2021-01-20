@@ -12,6 +12,7 @@ export default {
 
 <style scoped lang="scss">
 .btn {
+  position: relative;
   background-color: $accent;
   font-family: "Public Sans", sans-serif;
   font-size: $font-size * 2;
@@ -24,9 +25,16 @@ export default {
   cursor: pointer;
   color: $dark-gray;
   transition: all 0.2s ease;
+  outline: none;
+  box-shadow: 0px 3px 21px -1px rgba(0, 0, 0, 0.41);
 }
 
 .btn:hover {
   background-color: #be794f;
+}
+
+.btn:active {
+  box-shadow: none;
+  background-color: #b2895f;
 }
 </style>

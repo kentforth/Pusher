@@ -5,16 +5,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: ""
+    hasSpinner: false
   },
   mutations: {
-    SET_USER: (state, user) => (state.user = user)
+    SET_SPINNER_SHOW: state => (state.hasSpinner = true),
+    SET_SPINNER_HIDE: state => (state.hasSpinner = false)
   },
   actions: {
-    SET_USER: ({ commit }, user) => commit("SET_USER", user)
+    SHOW_SPINNER: ({ commit }) => commit("SET_SPINNER_SHOW"),
+    HIDE_SPINNER: ({ commit }) => commit("SET_SPINNER_HIDE")
   },
   modules: {},
-  getters: {
-    GET_USER: state => state.user
-  }
+  getters: {}
 });

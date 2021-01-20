@@ -11,19 +11,57 @@
           <div class="input">
             <font-awesome-icon icon="user" class="icon fa-user" />
             <span></span>
-            <input type="text" placeholder="Username" />
+            <input
+              type="text"
+              placeholder="Username"
+              v-model.trim="form.name"
+              :class="$v.form.name.$error ? 'input-error' : ''"
+            />
           </div>
+          <p
+            class="error"
+            :class="$v.form.name.$error ? 'showError' : 'hideError'"
+          >
+            Name is required
+          </p>
 
           <div class="input">
             <font-awesome-icon icon="envelope" class="icon fa-user" />
             <span></span>
-            <input type="email" placeholder="Email" />
+            <input
+              type="email"
+              placeholder="Email"
+              v-model.trim="form.email"
+              :class="$v.form.email.$error ? 'input-error' : ''"
+            />
+            <p
+              class="error"
+              :class="$v.form.email.$error ? 'showError' : 'hideError'"
+            >
+              Email is required
+            </p>
           </div>
 
           <div class="input">
             <font-awesome-icon icon="lock" class="icon fa-user" />
             <span></span>
-            <input type="password" placeholder="Password" />
+            <input
+              autocomplete="on"
+              type="password"
+              placeholder="Password"
+              v-model.trim="form.password"
+              :class="$v.form.password.$error ? 'input-error' : ''"
+            />
+          </div>
+          <p
+            class="error"
+            :class="$v.form.password.$error ? 'showError' : 'hideError'"
+          >
+            Password is required
+          </p>
+
+          <div class="error" v-if="error">
+            {{ error.message }}
           </div>
 
           <div class="button">
@@ -38,6 +76,13 @@
           </div>
         </form>
       </Form>
+
+      <pulse-loader
+        :loading="hasSpinner"
+        :color="spinnerColor"
+        :size="spinnerWidth"
+        class="spinner"
+      ></pulse-loader>
     </div>
   </div>
 </template>
@@ -45,9 +90,59 @@
 <script>
 import Form from "../components/Form";
 import Button from "../components/Button";
+
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import { required, email } from "vuelidate/lib/validators";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "SignUp",
-  components: { Button, Form }
+  components: { Button, Form, PulseLoader },
+  data: () => ({
+    spinnerColor: "#a6b0cf",
+    spinnerWidth: "24px",
+    error: "",
+    form: {
+      name: "",
+      email: "",
+      password: ""
+    }
+  }),
+  validations: {
+    form: {
+      name: { required },
+      email: { required, email },
+      password: { required }
+    }
+  },
+  computed: {
+    ...mapState(["hasSpinner"])
+  },
+  methods: {
+    ...mapActions(["SHOW_SPINNER", "HIDE_SPINNER"]),
+    submit() {
+      this.$v.form.$touch();
+      if (this.$v.form.$error) {
+        return;
+      }
+      this.SHOW_SPINNER();
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.form.email, this.form.password)
+        .then(() => {
+          localStorage.setItem("isLogged", "true");
+          this.HIDE_SPINNER();
+          this.$router.push("/");
+        })
+
+        .catch(error => {
+          this.error = error;
+          this.HIDE_SPINNER();
+        });
+    }
+  }
 };
 </script>
 

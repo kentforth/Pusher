@@ -39,7 +39,7 @@
 import Button from "../components/Button";
 import Form from "../components/Form";
 export default {
-  name: "SignIn",
+  name: "signin",
   components: { Form, Button },
   data: () => ({}),
   methods: {

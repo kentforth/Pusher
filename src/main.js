@@ -5,6 +5,11 @@ import store from "./store";
 
 import "./assets/scss/styles.scss";
 
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
+
+import firebase from "firebase/app";
+
 /*FONT AWESOME*/
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -16,7 +21,18 @@ import {
   faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import "./plugins/firebase.js";
+
+/*FIREBASE CONFIG*/
+const firebaseConfig = {
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_APP_ID
+};
+
+firebase.initializeApp(firebaseConfig);
 
 library.add(faComments, faCog, faSearch, faUser, faLock, faEnvelope);
 
