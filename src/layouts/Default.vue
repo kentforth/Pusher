@@ -12,6 +12,7 @@
 <script>
 import Sidebar from "../components/Sidebar";
 import Chat from "../components/Chat";
+
 export default {
   name: "Default",
   components: { Chat, Sidebar }
@@ -24,8 +25,9 @@ export default {
 }
 
 .view {
-  height: 100vh;
   background-color: $secondary;
   padding: 1em 0.8em;
+  width: 450px;
+  height: 100vh;
 }
 </style>

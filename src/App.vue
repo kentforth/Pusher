@@ -6,6 +6,7 @@
 <script>
 import EmptyLayout from "./layouts/Empty";
 import DefaultLayout from "./layouts/Default";
+
 export default {
   components: { EmptyLayout, DefaultLayout },
   computed: {

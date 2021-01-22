@@ -23,7 +23,8 @@ import {
   faUser,
   faLock,
   faEnvelope,
-  faSignOutAlt
+  faSignOutAlt,
+  faPen
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -46,7 +47,8 @@ library.add(
   faUser,
   faLock,
   faEnvelope,
-  faSignOutAlt
+  faSignOutAlt,
+  faPen
 );
 
 Vue.use(VueToast, {
@@ -59,14 +61,12 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 let app;
-firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged(() => {
   if (!app) {
     app = new Vue({
       router,
       store,
       render: h => h(App)
     }).$mount("#app");
-  } else {
-    console.log(user);
   }
 });

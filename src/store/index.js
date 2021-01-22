@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import userProfile from "./modules/userProfile";
 
 Vue.use(Vuex);
 
@@ -15,6 +16,8 @@ export default new Vuex.Store({
     SHOW_SPINNER: ({ commit }) => commit("SET_SPINNER_SHOW"),
     HIDE_SPINNER: ({ commit }) => commit("SET_SPINNER_HIDE")
   },
-  modules: {},
+  modules: {
+    userProfile: userProfile
+  },
   getters: {}
 });

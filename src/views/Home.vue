@@ -87,6 +87,60 @@ export default {
         time: "16:32",
         typing: true,
         image: require("../assets/images/test/image5.jpg")
+      },
+      {
+        id: 6,
+        name: "Sonya Blade",
+        lastMessage: "change stuff for tomorrow",
+        status: "active",
+        time: "16:32",
+        typing: true,
+        image: require("../assets/images/test/image5.jpg")
+      },
+      {
+        id: 7,
+        name: "Sonya Blade",
+        lastMessage: "change stuff for tomorrow",
+        status: "active",
+        time: "16:32",
+        typing: true,
+        image: require("../assets/images/test/image5.jpg")
+      },
+      {
+        id: 8,
+        name: "Sonya Blade",
+        lastMessage: "change stuff for tomorrow",
+        status: "active",
+        time: "16:32",
+        typing: true,
+        image: require("../assets/images/test/image5.jpg")
+      },
+      {
+        id: 9,
+        name: "Sonya Blade",
+        lastMessage: "change stuff for tomorrow",
+        status: "active",
+        time: "16:32",
+        typing: true,
+        image: require("../assets/images/test/image5.jpg")
+      },
+      {
+        id: 10,
+        name: "Sonya Blade",
+        lastMessage: "change stuff for tomorrow",
+        status: "active",
+        time: "16:32",
+        typing: true,
+        image: require("../assets/images/test/image5.jpg")
+      },
+      {
+        id: 11,
+        name: "Sonya Blade",
+        lastMessage: "change stuff for tomorrow",
+        status: "active",
+        time: "16:32",
+        typing: true,
+        image: require("../assets/images/test/image5.jpg")
       }
     ]
   })
@@ -95,5 +149,8 @@ export default {
 <style scoped lang="scss">
 .chat-list {
   margin-top: 2em;
+  padding-bottom: 2em;
+  overflow-y: scroll;
+  height: 750px;
 }
 </style>

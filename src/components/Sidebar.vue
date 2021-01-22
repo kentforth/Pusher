@@ -33,9 +33,15 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
+import { mapActions } from "vuex";
+
 export default {
   name: "Sidebar",
+  mounted() {
+    this.GET_USER_IMAGE_FROM_FIREBASE();
+  },
   methods: {
+    ...mapActions("userProfile", ["GET_USER_IMAGE_FROM_FIREBASE"]),
     async signOut() {
       try {
         await firebase.auth().signOut();
@@ -51,7 +57,7 @@ export default {
 <style scoped lang="scss">
 .sidebar {
   width: rem(100px);
-  height: 100vh;
+  max-height: 100vh;
   padding: rem(20px) rem(15px);
   background-color: $dark-gray;
   display: grid;

@@ -16,7 +16,7 @@ const routes = [
     name: "home",
     component: () => import("../views/Home.vue"),
     meta: {
-      title: "home",
+      title: "Home",
       layout: "default",
       requiresAuth: true
     }
@@ -26,7 +26,7 @@ const routes = [
     name: "settings",
     component: () => import("../views/Settings.vue"),
     meta: {
-      title: "settings",
+      title: "Settings",
       layout: "default",
       requiresAuth: true
     }
