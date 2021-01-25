@@ -9,6 +9,7 @@ import DefaultLayout from "./layouts/Default";
 
 export default {
   components: { EmptyLayout, DefaultLayout },
+
   computed: {
     layout() {
       return (this.$route.meta.layout || "default") + "-layout";

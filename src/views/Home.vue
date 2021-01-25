@@ -6,20 +6,20 @@
     </div>
 
     <div class="chat-list">
-      <RecentUser v-for="user in users" :key="user.id">
+      <RecentUser v-for="room in allRooms" :key="room.id">
         <div class="image">
-          <img :src="user.image" alt="image" />
+          <img :src="userImage" :alt="`image ${room.name}`" />
           <div
             class="status"
             :class="[
-              user.status === 'active' ? 'status-active' : 'status-inactive'
+              room.status === 'active' ? 'status-active' : 'status-inactive'
             ]"
           ></div>
         </div>
 
         <div class="info">
-          <h3>{{ user.name }}</h3>
-          <p v-if="!user.typing">{{ user.lastMessage }}</p>
+          <h3>{{ room.name }}</h3>
+          <p v-if="!room.typing">{{ room.lastMessage }}</p>
           <div class="typing" v-else>
             <span>typing</span>
             <div class="dot"></div>
@@ -38,112 +38,53 @@
 <script>
 import SearchBar from "../components/SearchBar";
 import RecentUser from "../components/RecentUser";
+
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+import "firebase/auth";
+
 export default {
   name: "Home",
   components: { RecentUser, SearchBar },
   data: () => ({
-    users: [
-      {
-        id: 1,
-        name: "Patrick Harris",
-        lastMessage: "Hey! I am there",
-        status: "active",
-        time: "12:25",
-        typing: true,
-        image: require("../assets/images/test/image1.jpg")
-      },
-      {
-        id: 2,
-        name: "Elizabeth Weilsh",
-        lastMessage: "Mystic main",
-        status: "inactive",
-        time: "14:21",
-        typing: false,
-        image: require("../assets/images/test/image2.jpg")
-      },
-      {
-        id: 3,
-        name: "Lori Plamer",
-        lastMessage: "Fizics ocure",
-        status: "active",
-        time: "10:47",
-        typing: true,
-        image: require("../assets/images/test/image3.jpg")
-      },
-      {
-        id: 4,
-        name: "John Beleck",
-        lastMessage: "Should I return back to office?",
-        status: "inactive",
-        time: "16:32",
-        typing: false,
-        image: require("../assets/images/test/image4.jpg")
-      },
-      {
-        id: 5,
-        name: "Sonya Blade",
-        lastMessage: "change stuff for tomorrow",
-        status: "active",
-        time: "16:32",
-        typing: true,
-        image: require("../assets/images/test/image5.jpg")
-      },
-      {
-        id: 6,
-        name: "Sonya Blade",
-        lastMessage: "change stuff for tomorrow",
-        status: "active",
-        time: "16:32",
-        typing: true,
-        image: require("../assets/images/test/image5.jpg")
-      },
-      {
-        id: 7,
-        name: "Sonya Blade",
-        lastMessage: "change stuff for tomorrow",
-        status: "active",
-        time: "16:32",
-        typing: true,
-        image: require("../assets/images/test/image5.jpg")
-      },
-      {
-        id: 8,
-        name: "Sonya Blade",
-        lastMessage: "change stuff for tomorrow",
-        status: "active",
-        time: "16:32",
-        typing: true,
-        image: require("../assets/images/test/image5.jpg")
-      },
-      {
-        id: 9,
-        name: "Sonya Blade",
-        lastMessage: "change stuff for tomorrow",
-        status: "active",
-        time: "16:32",
-        typing: true,
-        image: require("../assets/images/test/image5.jpg")
-      },
-      {
-        id: 10,
-        name: "Sonya Blade",
-        lastMessage: "change stuff for tomorrow",
-        status: "active",
-        time: "16:32",
-        typing: true,
-        image: require("../assets/images/test/image5.jpg")
-      },
-      {
-        id: 11,
-        name: "Sonya Blade",
-        lastMessage: "change stuff for tomorrow",
-        status: "active",
-        time: "16:32",
-        typing: true,
-        image: require("../assets/images/test/image5.jpg")
-      }
-    ]
-  })
+    rooms: [],
+    image: ""
+  }),
+  computed: {
+    allRooms() {
+      return this.rooms;
+    },
+    userImage() {
+      return this.image;
+    }
+  },
+  created() {
+    this.displayRooms();
+  },
+  methods: {
+    async displayRooms() {
+      const snapshot = await firebase
+        .firestore()
+        .collection("rooms")
+        .get();
+      const rooms = [];
+      snapshot.forEach(doc => {
+        firebase
+          .storage()
+          .ref("users/" + doc.id + "/profile.jpg")
+          .getDownloadURL()
+          .then(url => {
+            this.image = url;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        rooms.push({ id: doc.id, image: this.image, ...doc.data() });
+      });
+      this.rooms = rooms;
+    }
+  }
 };
 </script>
 <style scoped lang="scss">

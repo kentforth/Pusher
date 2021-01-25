@@ -33,15 +33,24 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Sidebar",
-  mounted() {
-    this.GET_USER_IMAGE_FROM_FIREBASE();
+  created() {
+    if (this.userImage) {
+      this.GET_USER_IMAGE_FROM_FIREBASE();
+    }
+    this.GET_USERNAME_FROM_FIREBASE();
+  },
+  computed: {
+    ...mapState("userProfile", ["userImage"])
   },
   methods: {
-    ...mapActions("userProfile", ["GET_USER_IMAGE_FROM_FIREBASE"]),
+    ...mapActions("userProfile", [
+      "GET_USER_IMAGE_FROM_FIREBASE",
+      "GET_USERNAME_FROM_FIREBASE"
+    ]),
     async signOut() {
       try {
         await firebase.auth().signOut();

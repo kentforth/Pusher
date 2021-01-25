@@ -95,6 +95,7 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { required, email } from "vuelidate/lib/validators";
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -129,10 +130,14 @@ export default {
       }
       this.error = "";
       this.SHOW_SPINNER();
+      this.createUserInAuth();
+    },
+    createUserInAuth() {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.form.email, this.form.password)
         .then(() => {
+          this.createUserInfo();
           this.HIDE_SPINNER();
           this.$router.push("/");
           this.$toast.success("Congratulations! You have been registered", {
@@ -143,6 +148,23 @@ export default {
         .catch(error => {
           this.error = error;
           this.HIDE_SPINNER();
+        });
+    },
+    createUserInfo() {
+      let userId = firebase.auth().currentUser.uid;
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .set({
+          name: this.form.name,
+          email: this.form.email,
+          location: "",
+          status: "active",
+          is_messaging: false
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   }

@@ -13,9 +13,29 @@
 import Sidebar from "../components/Sidebar";
 import Chat from "../components/Chat";
 
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
+
 export default {
   name: "Default",
-  components: { Chat, Sidebar }
+  components: { Chat, Sidebar },
+  created() {
+    window.addEventListener("beforeunload", this.beforeUserLeaveApp);
+  },
+  methods: {
+    beforeUserLeaveApp() {
+      const userId = firebase.auth().currentUser.uid;
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .update({
+          status: "inactive"
+        });
+    }
+  }
 };
 </script>
 

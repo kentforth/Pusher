@@ -5,7 +5,7 @@
     <div class="profile-image">
       <img :src="profileImage" alt="profile-image" />
 
-      <h2>Patricia Smith</h2>
+      <h2>{{ userName }}</h2>
       <div class="file-choser">
         <image-uploader
           :maxWidth="600"
@@ -40,7 +40,6 @@ import { mapState, mapActions } from "vuex";
 import firebase from "firebase/app";
 import "firebase/storage";
 import "firebase/auth";
-import "firebase/firestore";
 import ImageUploader from "vue-image-upload-resize";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 export default {
@@ -63,12 +62,13 @@ export default {
       }
       return this.userImage;
     },
-    ...mapState("userProfile", ["userImage"]),
+    ...mapState("userProfile", ["userImage", "userName"]),
     ...mapState(["hasSpinner"])
   },
   methods: {
     ...mapActions("userProfile", ["GET_USER_IMAGE_FROM_FIREBASE"]),
-    ...mapActions(["SHOW_SPINNER", "SHOW_SPINNER", "HIDE_SPINNER"]),
+    ...mapActions(["SHOW_SPINNER", "HIDE_SPINNER"]),
+
     /*upload image to firebase*/
     setImage(file) {
       this.SHOW_SPINNER();
