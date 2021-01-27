@@ -104,12 +104,7 @@ export default {
   data: () => ({
     spinnerColor: "#a6b0cf",
     spinnerWidth: "24px",
-    error: "",
-    form: {
-      name: "",
-      email: "",
-      password: ""
-    }
+    error: ""
   }),
   validations: {
     form: {

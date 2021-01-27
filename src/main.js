@@ -24,7 +24,8 @@ import {
   faLock,
   faEnvelope,
   faSignOutAlt,
-  faPen
+  faPen,
+  faPencilAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -48,7 +49,8 @@ library.add(
   faLock,
   faEnvelope,
   faSignOutAlt,
-  faPen
+  faPen,
+  faPencilAlt
 );
 
 Vue.use(VueToast, {
