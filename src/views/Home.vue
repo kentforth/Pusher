@@ -6,20 +6,25 @@
     </div>
 
     <div class="chat-list">
-      <RecentUser v-for="room in allRooms" :key="room.id">
+      <RecentUser
+        v-for="user in users"
+        :key="user.id"
+        :class="{ 'active-user': user.id === selectedUser }"
+        @click.native="showCurrentUser(user.id)"
+      >
         <div class="image">
-          <img :src="userImage" :alt="`image ${room.name}`" />
+          <img :src="user.image" :alt="`image ${user.name}`" />
           <div
             class="status"
             :class="[
-              room.status === 'active' ? 'status-active' : 'status-inactive'
+              user.status === 'active' ? 'status-active' : 'status-inactive'
             ]"
           ></div>
         </div>
 
         <div class="info">
-          <h3>{{ room.name }}</h3>
-          <p v-if="!room.typing">{{ room.lastMessage }}</p>
+          <h3>{{ user.name }}</h3>
+          <p v-if="!user.is_messaging">Last Message</p>
           <div class="typing" v-else>
             <span>typing</span>
             <div class="dot"></div>
@@ -39,50 +44,20 @@
 import SearchBar from "../components/SearchBar";
 import RecentUser from "../components/RecentUser";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
-import "firebase/auth";
+import { mapState } from "vuex";
 
 export default {
   name: "Home",
   components: { RecentUser, SearchBar },
   data: () => ({
-    rooms: [],
-    image: ""
+    selectedUser: undefined
   }),
   computed: {
-    allRooms() {
-      return this.rooms;
-    },
-    userImage() {
-      return this.image;
-    }
-  },
-  created() {
-    this.displayRooms();
+    ...mapState("userProfile", ["users"])
   },
   methods: {
-    async displayRooms() {
-      const snapshot = await firebase
-        .firestore()
-        .collection("rooms")
-        .get();
-      const rooms = [];
-      snapshot.forEach(doc => {
-        firebase
-          .storage()
-          .ref("users/" + doc.id + "/profile.jpg")
-          .getDownloadURL()
-          .then(url => {
-            this.image = url;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-        rooms.push({ id: doc.id, image: this.image, ...doc.data() });
-      });
-      this.rooms = rooms;
+    showCurrentUser(userId) {
+      this.selectedUser = userId;
     }
   }
 };

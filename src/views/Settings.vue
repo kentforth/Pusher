@@ -131,6 +131,8 @@ import { required, email } from "vuelidate/lib/validators";
 import firebase from "firebase/app";
 import "firebase/storage";
 import "firebase/auth";
+import "firebase/firestore";
+
 import ImageUploader from "vue-image-upload-resize";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import ClipLoader from "vue-spinner/src/ClipLoader.vue";
@@ -185,8 +187,37 @@ export default {
         .ref("users/" + userId + "/profile.jpg")
         .putString(file, "data_url")
         .then(() => {
-          this.GET_USER_IMAGE_FROM_FIREBASE();
-          this.HIDE_SPINNER();
+          this.getImageFromFirebaseStorage();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    getImageFromFirebaseStorage() {
+      let userId = firebase.auth().currentUser.uid;
+
+      /*get image*/
+      firebase
+        .storage()
+        .ref("users/" + userId + "/profile.jpg")
+        .getDownloadURL()
+        .then(url => {
+          /*update image url in user profile in firebase*/
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .update({
+              image: url
+            })
+            .then(() => {
+              this.GET_USER_INFO_FROM_FIREBASE();
+              this.HIDE_SPINNER();
+            })
+            .catch(error => {
+              console.log(error);
+            });
         })
         .catch(error => {
           console.log(error);

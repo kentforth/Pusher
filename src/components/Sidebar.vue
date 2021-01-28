@@ -36,15 +36,14 @@ import { mapActions } from "vuex";
 
 export default {
   name: "Sidebar",
-  created() {
-    this.GET_USER_IMAGE_FROM_FIREBASE();
+  mounted() {
+    this.GET_USERS();
     this.GET_USER_INFO_FROM_FIREBASE();
   },
+
   methods: {
-    ...mapActions("userProfile", [
-      "GET_USER_IMAGE_FROM_FIREBASE",
-      "GET_USER_INFO_FROM_FIREBASE"
-    ]),
+    ...mapActions("userProfile", ["GET_USER_INFO_FROM_FIREBASE", "GET_USERS"]),
+
     async signOut() {
       try {
         await firebase.auth().signOut();

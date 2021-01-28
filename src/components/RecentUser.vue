@@ -103,6 +103,10 @@ export default {
   z-index: 999;
 }
 
+.active-user {
+  background-color: $blue !important;
+}
+
 /*ANIMATION*/
 @keyframes movingTop {
   0%,

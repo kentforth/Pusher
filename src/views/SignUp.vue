@@ -96,6 +96,7 @@ import { required, email } from "vuelidate/lib/validators";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -104,7 +105,12 @@ export default {
   data: () => ({
     spinnerColor: "#a6b0cf",
     spinnerWidth: "24px",
-    error: ""
+    error: "",
+    form: {
+      name: "",
+      email: "",
+      password: ""
+    }
   }),
   validations: {
     form: {
@@ -118,6 +124,7 @@ export default {
   },
   methods: {
     ...mapActions(["SHOW_SPINNER", "HIDE_SPINNER"]),
+    ...mapActions("userProfile", ["GET_USER_INFO_FROM_FIREBASE"]),
     submit() {
       this.$v.form.$touch();
       if (this.$v.form.$error) {
@@ -133,10 +140,11 @@ export default {
         .createUserWithEmailAndPassword(this.form.email, this.form.password)
         .then(() => {
           this.createUserInfo();
+          this.GET_USER_INFO_FROM_FIREBASE();
           this.HIDE_SPINNER();
           this.$router.push("/");
           this.$toast.success("Congratulations! You have been registered", {
-            duration: 2500,
+            duration: 3500,
             position: "bottom"
           });
         })
@@ -147,19 +155,41 @@ export default {
     },
     createUserInfo() {
       let userId = firebase.auth().currentUser.uid;
+
+      /*Get default image from firebase*/
       firebase
-        .firestore()
-        .collection("users")
-        .doc(userId)
-        .set({
-          name: this.form.name,
-          email: this.form.email,
-          location: "",
-          status: "active",
-          is_messaging: false
+        .storage()
+        .ref("users/profile.jpg")
+        .getDownloadURL()
+        .then(url => {
+          /*create user info in firebase*/
+          this.createRoomInDatabase();
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .set({
+              id: userId,
+              name: this.form.name,
+              email: this.form.email,
+              location: "",
+              status: "active",
+              is_messaging: false,
+              image: url
+            });
         })
         .catch(error => {
           console.log(error);
+        });
+    },
+    createRoomInDatabase() {
+      let userId = firebase.auth().currentUser.uid;
+      firebase
+        .firestore()
+        .collection("rooms")
+        .doc(userId)
+        .set({
+          name: this.form.name
         });
     }
   }
