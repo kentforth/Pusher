@@ -42,6 +42,7 @@ export default {
   },
   mounted() {
     this.setUserStatusActive();
+    this.CLEAR_CURRENT_ROOM();
   },
   beforeMount() {
     window.addEventListener("beforeunload", e => this.setUserStatusInactive(e));
@@ -53,6 +54,7 @@ export default {
   },
   methods: {
     ...mapActions("userProfile", ["GET_USER_INFO_FROM_FIREBASE", "GET_USERS"]),
+    ...mapActions("rooms", ["CLEAR_CURRENT_ROOM"]),
     setUserStatusActive() {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {

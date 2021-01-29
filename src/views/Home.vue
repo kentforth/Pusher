@@ -9,7 +9,7 @@
       <RecentUser
         v-for="user in users"
         :key="user.id"
-        :class="{ 'active-user': user.id === selectedUser }"
+        :class="{ 'active-user': user.id === selectedRoom }"
         @click.native="getCurrentUser(user.id)"
       >
         <div class="image">
@@ -28,7 +28,7 @@
           <div
             class="typing"
             v-else
-            :class="{ 'active-messaging': user.id === selectedUser }"
+            :class="{ 'active-messaging': user.id === selectedRoom }"
           >
             <span>typing</span>
             <div class="dot"></div>
@@ -54,16 +54,16 @@ export default {
   name: "Home",
   components: { RecentUser, SearchBar },
   data: () => ({
-    selectedUser: undefined
+    selectedRoom: undefined
   }),
   computed: {
     ...mapState("userProfile", ["users"])
   },
   methods: {
-    ...mapActions("rooms", ["SET_CURRENT_ROOM"]),
+    ...mapActions("rooms", ["GET_CURRENT_ROOM"]),
     getCurrentUser(userId) {
-      this.selectedUser = userId;
-      this.SET_CURRENT_ROOM(userId);
+      this.selectedRoom = userId;
+      this.GET_CURRENT_ROOM(userId);
     }
   }
 };

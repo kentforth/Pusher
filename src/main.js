@@ -28,7 +28,11 @@ import {
   faPencilAlt,
   faLaugh,
   faPaperclip,
-  faPaperPlane
+  faPaperPlane,
+  faVideo,
+  faClock,
+  faEllipsisV,
+  faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -56,7 +60,11 @@ library.add(
   faPencilAlt,
   faLaugh,
   faPaperclip,
-  faPaperPlane
+  faPaperPlane,
+  faVideo,
+  faClock,
+  faEllipsisV,
+  faTrashAlt
 );
 
 Vue.use(VueToast, {

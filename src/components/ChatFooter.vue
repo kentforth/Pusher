@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" :class="{ hide: !currentRoom.id }">
     <form action="" class="form" @submit.prevent="sendMessage">
       <input
         type="text"
@@ -17,11 +17,16 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "ChatFooter",
   data: () => ({
     message: ""
   }),
+  computed: {
+    ...mapState("rooms", ["currentRoom"])
+  },
   methods: {
     sendMessage() {
       console.log(this.message);
@@ -36,6 +41,7 @@ export default {
   width: 100%;
   height: 100%;
   padding: rem(25px);
+  transition: all 0.6s ease;
 }
 
 .input {
@@ -91,5 +97,12 @@ export default {
 .btn-send:active {
   border: 3px solid $white;
   background-color: $secondary;
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
+  transform: translateY(10px);
 }
 </style>
