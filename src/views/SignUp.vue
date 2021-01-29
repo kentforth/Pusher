@@ -144,7 +144,7 @@ export default {
           this.HIDE_SPINNER();
           this.$router.push("/");
           this.$toast.success("Congratulations! You have been registered", {
-            duration: 3500,
+            duration: 4000,
             position: "bottom"
           });
         })
@@ -179,7 +179,7 @@ export default {
             });
         })
         .catch(error => {
-          console.log(error);
+          this.error = error;
         });
     },
     createRoomInDatabase() {

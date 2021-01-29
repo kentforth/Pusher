@@ -216,7 +216,10 @@ export default {
               this.HIDE_SPINNER();
             })
             .catch(error => {
-              console.log(error);
+              this.$toast.error(error, {
+                duration: 4000,
+                position: "bottom"
+              });
             });
         })
         .catch(error => {

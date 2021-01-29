@@ -47,7 +47,7 @@ export default {
 .view {
   background-color: $secondary;
   padding: 1em 0.8em;
-  width: 450px;
+  width: rem(500px);
   height: 100vh;
 }
 </style>

@@ -97,7 +97,6 @@ export default {
           this.HIDE_SPINNER();
           this.error = error.message;
         }
-        console.log(error);
       }
     }
   }

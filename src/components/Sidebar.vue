@@ -39,10 +39,12 @@ export default {
   created() {
     this.GET_USERS();
     this.GET_USER_INFO_FROM_FIREBASE();
-    window.addEventListener("beforeunload", e => this.setUserStatusInactive(e));
   },
   mounted() {
     this.setUserStatusActive();
+  },
+  beforeMount() {
+    window.addEventListener("beforeunload", e => this.setUserStatusInactive(e));
   },
   beforeDestroy() {
     window.removeEventListener("beforeunload", e =>
@@ -52,18 +54,23 @@ export default {
   methods: {
     ...mapActions("userProfile", ["GET_USER_INFO_FROM_FIREBASE", "GET_USERS"]),
     setUserStatusActive() {
-      let userId = firebase.auth().currentUser.uid;
-      firebase
-        .firestore()
-        .collection("users")
-        .doc(userId)
-        .update({
-          status: "active"
-        });
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          let userId = firebase.auth().currentUser.uid;
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .update({
+              status: "active"
+            });
+        }
+      });
     },
     setUserStatusInactive(e) {
       e.preventDefault();
-      e.returnValue = "";
+
+      delete e["returnValue"];
       let userId = firebase.auth().currentUser.uid;
 
       firebase
@@ -75,9 +82,21 @@ export default {
         });
     },
 
-    async signOut() {
+    signOut() {
       try {
-        await firebase.auth().signOut();
+        let userId = firebase.auth().currentUser.uid;
+
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(userId)
+          .update({
+            status: "inactive"
+          })
+          .then(() => {
+            firebase.auth().signOut();
+          });
+
         this.$router.replace({ name: "signin" });
       } catch (error) {
         this.$toast.error(error, {

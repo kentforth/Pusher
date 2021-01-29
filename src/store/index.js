@@ -1,6 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
+import createPersistedState from "vuex-persistedstate";
+
 import userProfile from "./modules/userProfile";
+import rooms from "./modules/rooms";
 
 Vue.use(Vuex);
 
@@ -17,7 +21,9 @@ export default new Vuex.Store({
     HIDE_SPINNER: ({ commit }) => commit("SET_SPINNER_HIDE")
   },
   modules: {
-    userProfile: userProfile
+    userProfile: userProfile,
+    rooms: rooms
   },
+  plugins: [createPersistedState()],
   getters: {}
 });

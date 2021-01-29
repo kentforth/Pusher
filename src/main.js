@@ -25,7 +25,10 @@ import {
   faEnvelope,
   faSignOutAlt,
   faPen,
-  faPencilAlt
+  faPencilAlt,
+  faLaugh,
+  faPaperclip,
+  faPaperPlane
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -50,7 +53,10 @@ library.add(
   faEnvelope,
   faSignOutAlt,
   faPen,
-  faPencilAlt
+  faPencilAlt,
+  faLaugh,
+  faPaperclip,
+  faPaperPlane
 );
 
 Vue.use(VueToast, {

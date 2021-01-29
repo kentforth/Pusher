@@ -10,7 +10,7 @@
         v-for="user in users"
         :key="user.id"
         :class="{ 'active-user': user.id === selectedUser }"
-        @click.native="showCurrentUser(user.id)"
+        @click.native="getCurrentUser(user.id)"
       >
         <div class="image">
           <img :src="user.image" :alt="`image ${user.name}`" />
@@ -25,7 +25,11 @@
         <div class="info">
           <h3>{{ user.name }}</h3>
           <p v-if="!user.is_messaging">Last Message</p>
-          <div class="typing" v-else>
+          <div
+            class="typing"
+            v-else
+            :class="{ 'active-messaging': user.id === selectedUser }"
+          >
             <span>typing</span>
             <div class="dot"></div>
             <div class="dot"></div>
@@ -44,7 +48,7 @@
 import SearchBar from "../components/SearchBar";
 import RecentUser from "../components/RecentUser";
 
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -56,8 +60,10 @@ export default {
     ...mapState("userProfile", ["users"])
   },
   methods: {
-    showCurrentUser(userId) {
+    ...mapActions("rooms", ["SET_CURRENT_ROOM"]),
+    getCurrentUser(userId) {
       this.selectedUser = userId;
+      this.SET_CURRENT_ROOM(userId);
     }
   }
 };

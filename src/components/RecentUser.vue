@@ -15,7 +15,7 @@ export default {
   padding: rem(10px) rem(20px);
   display: grid;
   align-items: start;
-  justify-content: center;
+  justify-content: start;
   grid-template-columns: 50px 1fr 0.4fr;
   grid-column-gap: rem(30px);
   border-radius: rem(4px);
@@ -29,7 +29,6 @@ export default {
 
 .image {
   position: relative;
-  justify-items: center;
   overflow: hidden;
   display: flex;
   width: 60px;
@@ -105,6 +104,12 @@ export default {
 
 .active-user {
   background-color: $blue !important;
+}
+
+.active-messaging {
+  span {
+    color: $accent;
+  }
 }
 
 /*ANIMATION*/
