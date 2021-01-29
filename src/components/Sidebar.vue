@@ -36,20 +36,54 @@ import { mapActions } from "vuex";
 
 export default {
   name: "Sidebar",
-  mounted() {
+  created() {
     this.GET_USERS();
     this.GET_USER_INFO_FROM_FIREBASE();
+    window.addEventListener("beforeunload", e => this.setUserStatusInactive(e));
   },
-
+  mounted() {
+    this.setUserStatusActive();
+  },
+  beforeDestroy() {
+    window.removeEventListener("beforeunload", e =>
+      this.setUserStatusInactive(e)
+    );
+  },
   methods: {
     ...mapActions("userProfile", ["GET_USER_INFO_FROM_FIREBASE", "GET_USERS"]),
+    setUserStatusActive() {
+      let userId = firebase.auth().currentUser.uid;
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .update({
+          status: "active"
+        });
+    },
+    setUserStatusInactive(e) {
+      e.preventDefault();
+      e.returnValue = "";
+      let userId = firebase.auth().currentUser.uid;
+
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .update({
+          status: "inactive"
+        });
+    },
 
     async signOut() {
       try {
         await firebase.auth().signOut();
         this.$router.replace({ name: "signin" });
       } catch (error) {
-        console.log(error);
+        this.$toast.error(error, {
+          duration: 3500,
+          position: "bottom"
+        });
       }
     }
   }
