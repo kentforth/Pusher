@@ -1,5 +1,5 @@
 <template>
-  <div class="room-message" :class="{ hide: !currentRoom.id }">
+  <div class="current-user-message" :class="{ hide: !currentRoom.id }">
     <slot></slot>
   </div>
 </template>
@@ -8,7 +8,7 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "RoomMessage",
+  name: "CurrentUserMessage",
   computed: {
     ...mapState("rooms", ["currentRoom"])
   }
@@ -16,32 +16,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.room-message {
+.current-user-message {
   transition: all 0.6s ease;
   display: grid;
-  grid-template-columns: 60px 1fr 0.3fr;
+  grid-template-columns: 10px 1fr;
   grid-column-gap: rem(15px);
+  justify-content: end;
   margin-top: 1em;
+  margin-left: auto;
   max-width: 45%;
   width: max-content;
-
-  &__image {
-    align-self: end;
-    img {
-      width: rem(60px);
-      height: rem(60px);
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  }
 }
 
 .text {
-  background-color: $primary;
+  background-color: $dark-gray;
   padding: rem(15px);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 
   &__time {
     display: flex;
@@ -62,8 +54,9 @@ export default {
 .rectangle {
   width: 0;
   height: 0;
-  border-top: 12px solid $primary;
-  border-right: 12px solid transparent;
+  margin-left: auto;
+  border-top: 12px solid $dark-gray;
+  border-left: 12px solid transparent;
 }
 
 .fa-clock {

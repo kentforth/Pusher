@@ -5,14 +5,22 @@ import store from "./store";
 
 import "./assets/scss/styles.scss";
 
+import DateFilter from "./filters/date";
+
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
+Vue.filter("date", DateFilter);
+
+/*FIREBASE*/
 import firebase from "firebase/app";
 import "firebase/auth";
 
+/*TOAST NOTIFICATION*/
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
+
+/*EMOJI*/
 
 /*FONT AWESOME*/
 import { library } from "@fortawesome/fontawesome-svg-core";

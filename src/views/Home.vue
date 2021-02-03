@@ -48,7 +48,7 @@
 import SearchBar from "../components/SearchBar";
 import RecentUser from "../components/RecentUser";
 
-import { mapState, mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Home",
@@ -56,14 +56,28 @@ export default {
   data: () => ({
     selectedRoom: undefined
   }),
+  created() {
+    const roomId = localStorage.getItem("roomId");
+    if (roomId) {
+      this.selectedRoom = roomId;
+    }
+  },
   computed: {
-    ...mapState("userProfile", ["users"])
+    ...mapState("userProfile", ["users"]),
+    ...mapState("rooms", ["currentRoom"])
   },
   methods: {
-    ...mapActions("rooms", ["GET_CURRENT_ROOM"]),
+    ...mapActions("rooms", [
+      "GET_CURRENT_ROOM",
+      "GET_ROOM_MESSAGES",
+      "CLEAR_MESSAGES"
+    ]),
     getCurrentUser(userId) {
+      localStorage.setItem("roomId", userId);
       this.selectedRoom = userId;
+      this.CLEAR_MESSAGES();
       this.GET_CURRENT_ROOM(userId);
+      this.GET_ROOM_MESSAGES(userId);
     }
   }
 };
@@ -73,6 +87,6 @@ export default {
   margin-top: 2em;
   padding-bottom: 2em;
   overflow-y: scroll;
-  height: 750px;
+  max-height: 600px;
 }
 </style>

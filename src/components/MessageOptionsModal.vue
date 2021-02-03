@@ -19,9 +19,12 @@ export default {
   border: 1px solid #3e4851;
   border-radius: 0.25rem;
   padding: rem(15px) 0;
-  z-index: 999;
+  z-index: 0;
   position: absolute;
-  top: 30%;
+  top: rem(45px);
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(15, 34, 58, 0.4);
 }
 
@@ -43,11 +46,18 @@ export default {
   font-size: rem(16px) !important;
 }
 
-.move-enter-active,
-.move-leave-active {
-  transition: all 0.3s ease;
+.fa-ellipsis {
+  z-index: 999;
 }
-.move-enter, .move-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  top: 40%;
+
+.modal-active {
+  top: rem(35px);
+  opacity: 1;
+  z-index: 999;
+  pointer-events: auto;
+}
+
+.modal-active-current-user {
+  right: 0;
 }
 </style>

@@ -1,5 +1,16 @@
 <template>
   <div class="footer" :class="{ hide: !currentRoom.id }">
+    <transition name="fade">
+      <div class="emoji-window" v-if="emojiStatus">
+        <picker
+          :data="emojiIndex"
+          set="twitter"
+          @select="selectEmoji"
+          title="Pick Emoji"
+        />
+      </div>
+    </transition>
+
     <form action="" class="form" @submit.prevent="sendMessage">
       <input
         type="text"
@@ -7,7 +18,11 @@
         placeholder="Enter Message..."
         v-model="message"
       />
-      <font-awesome-icon icon="laugh" class="icon fa-laugh" />
+      <font-awesome-icon
+        icon="laugh"
+        class="icon fa-laugh"
+        @click.prevent="showEmoji"
+      />
       <font-awesome-icon icon="paperclip" class="icon fa-paperclip" />
       <button class="btn-send" type="submit">
         <font-awesome-icon icon="paper-plane" class="icon fa-plane" />
@@ -17,19 +32,84 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+
+import data from "emoji-mart-vue-fast/data/all.json";
+import "emoji-mart-vue-fast/css/emoji-mart.css";
+import { Picker, EmojiIndex } from "emoji-mart-vue-fast";
+
 import { mapState } from "vuex";
 
+let emojiIndex = new EmojiIndex(data);
 export default {
   name: "ChatFooter",
+  components: { Picker },
   data: () => ({
-    message: ""
+    message: "",
+    emojiStatus: false,
+    emojiIndex: emojiIndex
   }),
+
   computed: {
-    ...mapState("rooms", ["currentRoom"])
+    ...mapState("rooms", ["currentRoom"]),
+    ...mapState("userProfile", ["form"])
+  },
+  mounted() {
+    document.addEventListener("click", this.hideEmoji);
+  },
+  beforeDestroy() {
+    document.removeEventListener("click", this.hideEmoji);
   },
   methods: {
-    sendMessage() {
-      console.log(this.message);
+    selectEmoji(e) {
+      if (!e) {
+        return false;
+      }
+      this.message = this.message + e.native;
+    },
+    showEmoji(e) {
+      e.stopPropagation();
+      this.emojiStatus = true;
+    },
+    hideEmoji() {
+      this.emojiStatus = false;
+    },
+    async sendMessage() {
+      /*save message of user in firebase*/
+      if (this.message !== "" && this.currentRoom) {
+        const userId = firebase.auth().currentUser.uid;
+        let newMessage = this.message;
+        let chatId;
+        if (this.currentRoom.id < userId) {
+          chatId = this.currentRoom.id + userId;
+        } else {
+          chatId = userId + this.currentRoom.id;
+        }
+        this.message = "";
+        await firebase
+          .firestore()
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .add({
+            receiverId: this.currentRoom.id,
+            senderId: userId,
+            author: this.form.name,
+            message: newMessage,
+            createdAt: new Date()
+          })
+          .then(() => {
+            this.message = "";
+          })
+          .catch(error => {
+            this.$toast.error(error, {
+              duration: 4000,
+              position: "bottom"
+            });
+          });
+      }
     }
   }
 };
@@ -40,6 +120,7 @@ export default {
   border-top: 1px solid $dark-gray;
   width: 100%;
   height: 100%;
+  margin-top: auto;
   padding: rem(25px);
   transition: all 0.6s ease;
 }
@@ -58,6 +139,7 @@ export default {
   justify-items: center;
   align-items: center;
 }
+
 .fa-laugh,
 .fa-paperclip {
   color: $primary;
@@ -104,5 +186,18 @@ export default {
   pointer-events: none;
   cursor: default;
   transform: translateY(10px);
+}
+
+.emoji-window {
+  position: fixed;
+  top: rem(400px);
+  right: rem(200px);
+}
+
+.row {
+  display: flex;
+}
+.row > * {
+  margin: auto;
 }
 </style>

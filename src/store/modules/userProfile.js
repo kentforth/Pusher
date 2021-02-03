@@ -63,11 +63,11 @@ const userProfile = {
             .collection("users")
             .onSnapshot(res => {
               const changes = res.docChanges();
-
               changes.forEach(change => {
                 let userId = firebase.auth().currentUser.uid;
                 if (change.type === "added") {
                   if (
+                    //push only users except current user
                     users.indexOf(change.doc.data() === -1) &&
                     userId !== change.doc.data().id
                   ) {
@@ -97,7 +97,9 @@ const userProfile = {
             .doc(userId)
             .get()
             .then(doc => {
-              commit("SET_USER_INFO", doc.data());
+              if (doc.data()) {
+                commit("SET_USER_INFO", doc.data());
+              }
             })
             .catch(error => {
               console.log(error);

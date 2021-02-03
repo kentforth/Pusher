@@ -5,6 +5,7 @@
         :src="currentRoom.image"
         alt="profile image"
         class="profile__image"
+        v-if="currentRoom.image"
       />
       <h3>{{ currentRoom.name }}</h3>
       <span v-if="currentRoom.status === 'active'"></span>
@@ -32,7 +33,7 @@ export default {
   width: 100%;
   border-bottom: 1px solid $dark-gray;
   display: grid;
-  padding: rem(30px);
+  padding: rem(20px) rem(30px);
   grid-template-columns: 1fr 1fr;
   align-content: center;
   transition: all 0.6s ease;
@@ -43,8 +44,9 @@ export default {
   align-items: center;
 
   &__image {
-    width: rem(40px);
-    height: rem(40px);
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
     border-radius: 50%;
   }
 

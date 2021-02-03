@@ -163,7 +163,6 @@ export default {
         .getDownloadURL()
         .then(url => {
           /*create user info in firebase*/
-          this.createRoomInDatabase();
           firebase
             .firestore()
             .collection("users")
@@ -179,17 +178,10 @@ export default {
             });
         })
         .catch(error => {
-          this.error = error;
-        });
-    },
-    createRoomInDatabase() {
-      let userId = firebase.auth().currentUser.uid;
-      firebase
-        .firestore()
-        .collection("rooms")
-        .doc(userId)
-        .set({
-          name: this.form.name
+          this.$toast.error(error, {
+            duration: 4000,
+            position: "bottom"
+          });
         });
     }
   }

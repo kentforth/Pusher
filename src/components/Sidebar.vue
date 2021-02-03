@@ -37,12 +37,10 @@ import { mapActions } from "vuex";
 export default {
   name: "Sidebar",
   created() {
+    this.CLEAR_MESSAGES();
     this.GET_USERS();
     this.GET_USER_INFO_FROM_FIREBASE();
-  },
-  mounted() {
     this.setUserStatusActive();
-    this.CLEAR_CURRENT_ROOM();
   },
   beforeMount() {
     window.addEventListener("beforeunload", e => this.setUserStatusInactive(e));
@@ -54,7 +52,11 @@ export default {
   },
   methods: {
     ...mapActions("userProfile", ["GET_USER_INFO_FROM_FIREBASE", "GET_USERS"]),
-    ...mapActions("rooms", ["CLEAR_CURRENT_ROOM"]),
+    ...mapActions("rooms", [
+      "CLEAR_CURRENT_ROOM",
+      "CLEAR_MESSAGES",
+      "GET_ROOM_MESSAGES"
+    ]),
     setUserStatusActive() {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -63,25 +65,40 @@ export default {
             .firestore()
             .collection("users")
             .doc(userId)
-            .update({
-              status: "active"
+            .get()
+            .then(doc => {
+              if (doc) {
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(userId)
+                  .update({
+                    status: "active"
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              }
             });
         }
       });
     },
     setUserStatusInactive(e) {
       e.preventDefault();
-
       delete e["returnValue"];
-      let userId = firebase.auth().currentUser.uid;
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          let userId = firebase.auth().currentUser.uid;
 
-      firebase
-        .firestore()
-        .collection("users")
-        .doc(userId)
-        .update({
-          status: "inactive"
-        });
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .update({
+              status: "inactive"
+            });
+        }
+      });
     },
 
     signOut() {
@@ -97,6 +114,8 @@ export default {
           })
           .then(() => {
             firebase.auth().signOut();
+            localStorage.removeItem("roomId");
+            this.CLEAR_MESSAGES();
           });
 
         this.$router.replace({ name: "signin" });
