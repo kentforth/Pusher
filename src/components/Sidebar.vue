@@ -32,7 +32,7 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Sidebar",
@@ -42,6 +42,7 @@ export default {
     this.GET_USER_INFO_FROM_FIREBASE();
     this.setUserStatusActive();
   },
+
   beforeMount() {
     window.addEventListener("beforeunload", e => this.setUserStatusInactive(e));
   },
@@ -50,13 +51,21 @@ export default {
       this.setUserStatusInactive(e)
     );
   },
+  computed: {
+    ...mapState("userProfile", ["users"])
+  },
   methods: {
-    ...mapActions("userProfile", ["GET_USER_INFO_FROM_FIREBASE", "GET_USERS"]),
+    ...mapActions("userProfile", [
+      "GET_USER_INFO_FROM_FIREBASE",
+      "GET_USERS",
+      "CLEAR_PROFILE"
+    ]),
     ...mapActions("rooms", [
       "CLEAR_CURRENT_ROOM",
       "CLEAR_MESSAGES",
       "GET_ROOM_MESSAGES"
     ]),
+
     setUserStatusActive() {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -116,6 +125,8 @@ export default {
             firebase.auth().signOut();
             localStorage.removeItem("roomId");
             this.CLEAR_MESSAGES();
+            this.CLEAR_PROFILE();
+            this.CLEAR_CURRENT_ROOM();
           });
 
         this.$router.replace({ name: "signin" });

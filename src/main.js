@@ -20,8 +20,6 @@ import "firebase/auth";
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
 
-/*EMOJI*/
-
 /*FONT AWESOME*/
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -35,7 +33,6 @@ import {
   faPen,
   faPencilAlt,
   faLaugh,
-  faPaperclip,
   faPaperPlane,
   faVideo,
   faClock,
@@ -67,7 +64,6 @@ library.add(
   faPen,
   faPencilAlt,
   faLaugh,
-  faPaperclip,
   faPaperPlane,
   faVideo,
   faClock,

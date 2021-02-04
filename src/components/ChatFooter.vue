@@ -17,13 +17,13 @@
         class="input"
         placeholder="Enter Message..."
         v-model="message"
+        ref="message"
       />
       <font-awesome-icon
         icon="laugh"
         class="icon fa-laugh"
         @click.prevent="showEmoji"
       />
-      <font-awesome-icon icon="paperclip" class="icon fa-paperclip" />
       <button class="btn-send" type="submit">
         <font-awesome-icon icon="paper-plane" class="icon fa-plane" />
       </button>
@@ -56,6 +56,7 @@ export default {
     ...mapState("rooms", ["currentRoom"]),
     ...mapState("userProfile", ["form"])
   },
+
   mounted() {
     document.addEventListener("click", this.hideEmoji);
   },
@@ -68,6 +69,7 @@ export default {
         return false;
       }
       this.message = this.message + e.native;
+      this.$refs.message.focus();
     },
     showEmoji(e) {
       e.stopPropagation();
@@ -102,6 +104,18 @@ export default {
           })
           .then(() => {
             this.message = "";
+            chatId = userId + this.currentRoom.id;
+            firebase
+              .firestore()
+              .collection("userLastMessages")
+              .doc(chatId)
+              .set({
+                receiverId: this.currentRoom.id,
+                senderId: userId,
+                author: this.form.name,
+                message: newMessage,
+                createdAt: new Date()
+              });
           })
           .catch(error => {
             this.$toast.error(error, {
@@ -134,7 +148,7 @@ export default {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 50px 50px 50px;
+  grid-template-columns: 1fr 50px 50px;
   grid-column-gap: rem(20px);
   justify-items: center;
   align-items: center;

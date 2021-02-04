@@ -31,6 +31,7 @@ export default {
 <style scoped lang="scss">
 .header {
   width: 100%;
+  height: rem(80px);
   border-bottom: 1px solid $dark-gray;
   display: grid;
   padding: rem(20px) rem(30px);

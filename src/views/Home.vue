@@ -24,10 +24,19 @@
 
         <div class="info">
           <h3>{{ user.name }}</h3>
-          <p v-if="!user.is_messaging">Last Message</p>
+          <div
+            class="div"
+            v-for="lastMessage in usersLastMessages"
+            :key="lastMessage.id"
+          >
+            <p v-if="!user.is_messaging && lastMessage.senderId === user.id">
+              {{ lastMessage.message }}
+            </p>
+          </div>
+
           <div
             class="typing"
-            v-else
+            v-if="user.is_messaging"
             :class="{ 'active-messaging': user.id === selectedRoom }"
           >
             <span>typing</span>
@@ -36,8 +45,14 @@
             <div class="dot"></div>
           </div>
         </div>
-        <div class="time">
-          <span>12:12: AM</span>
+        <div
+          class="time"
+          v-for="lastMessage in usersLastMessages"
+          :key="lastMessage.id"
+        >
+          <span v-if="lastMessage.senderId === user.id">{{
+            lastMessage.createdAt | date
+          }}</span>
         </div>
       </RecentUser>
     </div>
@@ -56,22 +71,29 @@ export default {
   data: () => ({
     selectedRoom: undefined
   }),
+  beforeUpdate() {
+    this.GET_USERS_LAST_MESSAGES();
+  },
   created() {
     const roomId = localStorage.getItem("roomId");
+
     if (roomId) {
       this.selectedRoom = roomId;
     }
   },
   computed: {
     ...mapState("userProfile", ["users"]),
-    ...mapState("rooms", ["currentRoom"])
+    ...mapState("rooms", ["currentRoom", "usersLastMessages"])
   },
   methods: {
     ...mapActions("rooms", [
       "GET_CURRENT_ROOM",
       "GET_ROOM_MESSAGES",
-      "CLEAR_MESSAGES"
+      "CLEAR_MESSAGES",
+      "GET_USERS_LAST_MESSAGES"
     ]),
+    ...mapActions("userProfile", ["GET_USERS"]),
+
     getCurrentUser(userId) {
       localStorage.setItem("roomId", userId);
       this.selectedRoom = userId;

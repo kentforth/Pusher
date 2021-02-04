@@ -18,6 +18,9 @@ const userProfile = {
   },
   mutations: {
     updateField,
+    CLEAR_PROFILE: state => {
+      state.form = {};
+    },
     SET_USER_INFO: (state, data) => {
       state.form.name = data.name;
       state.form.email = data.email;
@@ -54,6 +57,9 @@ const userProfile = {
   },
 
   actions: {
+    CLEAR_PROFILE({ commit }) {
+      commit("CLEAR_PROFILE");
+    },
     GET_USERS({ commit }) {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -74,6 +80,7 @@ const userProfile = {
                     users.push(change.doc.data());
                   }
                   commit("ADD_USER", users);
+                  return users;
                 }
 
                 if (change.type === "removed") {

@@ -28,24 +28,6 @@
               <div class="rectangle"></div>
               <p>{{ message.name }}</p>
             </div>
-            <div class="options">
-              <font-awesome-icon
-                icon="ellipsis-v"
-                class="icon fa-ellipsis"
-                @click.stop="openOptions(message.id)"
-              />
-
-              <MessageOptionsModal
-                :class="{
-                  'modal-active': isOptions && activeMessage === message.id
-                }"
-              >
-                <div class="modal-item" @click="deleteMessage">
-                  <p>Delete</p>
-                  <font-awesome-icon icon="trash-alt" class="icon fa-trash" />
-                </div>
-              </MessageOptionsModal>
-            </div>
           </RoomMessage>
 
           <CurrentUserMessage v-if="message.receiverId === currentRoom.id">
@@ -66,12 +48,18 @@
                     : ''
                 ]"
               >
+                <div class="modal-item" @click="editMessage">
+                  <p>Edit</p>
+                  <font-awesome-icon icon="pen" class="icon fa-trash" />
+                </div>
+
                 <div class="modal-item" @click="deleteMessage">
                   <p>Delete</p>
                   <font-awesome-icon icon="trash-alt" class="icon fa-trash" />
                 </div>
               </MessageOptionsModal>
             </div>
+
             <div class="room-message__text">
               <div class="text">
                 <p>{{ message.message }}</p>
@@ -117,10 +105,10 @@ export default {
 
   mounted() {
     const roomId = localStorage.getItem("roomId");
-    if (roomId) {
+    if (roomId !== null) {
       this.CLEAR_MESSAGES();
-      this.GET_CURRENT_ROOM(this.currentRoom.id);
-      this.GET_ROOM_MESSAGES(this.currentRoom.id);
+      this.GET_CURRENT_ROOM(roomId);
+      this.GET_ROOM_MESSAGES(roomId);
       this.scrollToBottom();
     } else {
       this.CLEAR_CURRENT_ROOM();
@@ -139,7 +127,6 @@ export default {
     ...mapState("rooms", [
       "currentRoom",
       "roomMessages",
-      "currentUserMessages",
       "currentRoom",
       "isMessagesLoading"
     ])
@@ -154,6 +141,9 @@ export default {
     scrollToBottom() {
       let container = this.$refs.messages;
       container.scrollTop = container.scrollHeight;
+    },
+    editMessage() {
+      console.log("edit");
     },
     deleteMessage() {
       console.log("delete");

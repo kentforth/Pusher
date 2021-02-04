@@ -88,6 +88,8 @@ export default {
 .time {
   display: flex;
   justify-content: flex-end;
+  grid-column: 3;
+  grid-row: 1;
 }
 
 .status {

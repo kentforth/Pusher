@@ -8,6 +8,7 @@ const rooms = {
   state: {
     roomMessages: [],
     isMessagesLoading: true,
+    usersLastMessages: [],
     currentRoom: {
       id: "",
       name: "",
@@ -25,7 +26,10 @@ const rooms = {
       };
     },
     CLEAR_CURRENT_ROOM: state => {
-      state.currentRoom = {};
+      state.currentRoom.id = "";
+    },
+    SET_USERS_LAST_MESSAGES: (state, messages) => {
+      state.usersLastMessages = messages;
     },
     SET_ROOM_MESSAGES: (state, messages) => {
       state.isMessagesLoading = true;
@@ -70,6 +74,30 @@ const rooms = {
         }
       });
     },
+    GET_USERS_LAST_MESSAGES({ commit }) {
+      let messages = [];
+      let message = {};
+      let userId = firebase.auth().currentUser.uid;
+
+      firebase
+        .firestore()
+        .collection("userLastMessages")
+        .where("receiverId", "==", userId)
+        .onSnapshot(snapshot => {
+          snapshot.docChanges().forEach(change => {
+            let doc = change.doc;
+
+            if (change.type === "added") {
+              message = {
+                id: doc.id,
+                ...doc.data()
+              };
+              messages.push(message);
+              commit("SET_USERS_LAST_MESSAGES", messages);
+            }
+          });
+        });
+    },
     async GET_ROOM_MESSAGES({ commit, state }, roomId) {
       let message = {};
       let messages = [];
@@ -100,11 +128,12 @@ const rooms = {
               }
             }
 
-            if (change.type === "removed") {
-              commit("REMOVE_USER", doc.data());
-            }
             if (change.type === "modified") {
-              commit("UPDATE_USER", doc.data());
+              commit("UPDATE_MESSAGE", doc.data());
+            }
+
+            if (change.type === "removed") {
+              commit("UPDATE_MESSAGE", doc.data());
             }
           });
         });
