@@ -104,7 +104,8 @@ export default {
             .collection("users")
             .doc(userId)
             .update({
-              status: "inactive"
+              status: "inactive",
+              is_messaging: false
             });
         }
       });

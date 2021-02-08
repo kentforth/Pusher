@@ -3,6 +3,7 @@
     <div class="container">
       <h1>Chats</h1>
       <SearchBar />
+      <p v-if="users.length < 1" class="no-user-found">No user found</p>
     </div>
 
     <div class="chat-list">
@@ -71,10 +72,9 @@ export default {
   data: () => ({
     selectedRoom: undefined
   }),
-  beforeUpdate() {
-    this.GET_USERS_LAST_MESSAGES();
-  },
+
   created() {
+    this.GET_USERS_LAST_MESSAGES();
     const roomId = localStorage.getItem("roomId");
 
     if (roomId) {
@@ -110,5 +110,12 @@ export default {
   padding-bottom: 2em;
   overflow-y: scroll;
   max-height: 600px;
+}
+
+.no-user-found {
+  color: $error;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 1.4rem;
 }
 </style>

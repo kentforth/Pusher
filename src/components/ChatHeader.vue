@@ -11,7 +11,6 @@
       <span v-if="currentRoom.status === 'active'"></span>
     </div>
     <div class="navigation">
-      <font-awesome-icon icon="search" class="icon fa-search" />
       <font-awesome-icon icon="video" class="icon fa-video" />
     </div>
   </div>

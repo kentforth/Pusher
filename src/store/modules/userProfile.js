@@ -21,6 +21,9 @@ const userProfile = {
     CLEAR_PROFILE: state => {
       state.form = {};
     },
+    CLEAR_USERS: state => {
+      state.users = [];
+    },
     SET_USER_INFO: (state, data) => {
       state.form.name = data.name;
       state.form.email = data.email;
@@ -59,6 +62,12 @@ const userProfile = {
   actions: {
     CLEAR_PROFILE({ commit }) {
       commit("CLEAR_PROFILE");
+    },
+    CLEAR_USERS({ commit }) {
+      commit("CLEAR_USERS");
+    },
+    GET_SEARCHED_USERS({ commit }, users) {
+      commit("ADD_USER", users);
     },
     GET_USERS({ commit }) {
       firebase.auth().onAuthStateChanged(function(user) {

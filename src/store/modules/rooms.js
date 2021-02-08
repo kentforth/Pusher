@@ -74,28 +74,28 @@ const rooms = {
         }
       });
     },
-    GET_USERS_LAST_MESSAGES({ commit }) {
-      let messages = [];
-      let message = {};
+    async GET_USERS_LAST_MESSAGES({ commit }) {
       let userId = firebase.auth().currentUser.uid;
 
-      firebase
+      let message = {};
+
+      await firebase
         .firestore()
         .collection("userLastMessages")
         .where("receiverId", "==", userId)
         .onSnapshot(snapshot => {
-          snapshot.docChanges().forEach(change => {
-            let doc = change.doc;
+          let messages = [];
+          snapshot.forEach(doc => {
+            let document = doc.data();
 
-            if (change.type === "added") {
-              message = {
-                id: doc.id,
-                ...doc.data()
-              };
-              messages.push(message);
-              commit("SET_USERS_LAST_MESSAGES", messages);
-            }
+            message = {
+              id: doc.id,
+              ...document
+            };
+            messages.push(message);
           });
+
+          commit("SET_USERS_LAST_MESSAGES", messages);
         });
     },
     async GET_ROOM_MESSAGES({ commit, state }, roomId) {

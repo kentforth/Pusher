@@ -17,6 +17,7 @@
         class="input"
         placeholder="Enter Message..."
         v-model="message"
+        @keyup="setUserMessagingStatus"
         ref="message"
       />
       <font-awesome-icon
@@ -47,6 +48,7 @@ export default {
   name: "ChatFooter",
   components: { Picker },
   data: () => ({
+    timeout: null,
     message: "",
     emojiStatus: false,
     emojiIndex: emojiIndex
@@ -62,6 +64,7 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener("click", this.hideEmoji);
+    clearTimeout(this.timeout);
   },
   methods: {
     selectEmoji(e) {
@@ -77,6 +80,29 @@ export default {
     },
     hideEmoji() {
       this.emojiStatus = false;
+    },
+    setUserMessagingStatus() {
+      clearTimeout(this.timeout);
+      let userId = firebase.auth().currentUser.uid;
+      if (this.message !== "") {
+        this.timeout = setTimeout(function() {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .update({
+              is_messaging: true
+            });
+        }, 300);
+      } else {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(userId)
+          .update({
+            is_messaging: false
+          });
+      }
     },
     async sendMessage() {
       /*save message of user in firebase*/
