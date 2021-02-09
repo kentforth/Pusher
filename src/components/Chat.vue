@@ -48,12 +48,12 @@
                     : ''
                 ]"
               >
-                <div class="modal-item" @click="editMessage">
+                <div class="modal-item" @click="editMessage(message)">
                   <p>Edit</p>
                   <font-awesome-icon icon="pen" class="icon fa-trash" />
                 </div>
 
-                <div class="modal-item" @click="deleteMessage">
+                <div class="modal-item" @click="deleteMessage(message)">
                   <p>Delete</p>
                   <font-awesome-icon icon="trash-alt" class="icon fa-trash" />
                 </div>
@@ -81,6 +81,8 @@
 </template>
 
 <script>
+import { bus } from "../main";
+
 import ChatFooter from "./ChatFooter";
 import ChatHeader from "./ChatHeader";
 
@@ -88,6 +90,10 @@ import { mapState, mapActions } from "vuex";
 import RoomMessage from "./RoomMessage";
 import MessageOptionsModal from "./MessageOptionsModal";
 import CurrentUserMessage from "./CurrentUserMessage";
+
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 export default {
   name: "Chat",
@@ -136,17 +142,46 @@ export default {
       "GET_CURRENT_ROOM",
       "CLEAR_CURRENT_ROOM",
       "CLEAR_MESSAGES",
-      "GET_ROOM_MESSAGES"
+      "GET_ROOM_MESSAGES",
+      "SET_MESSAGE_EDIT_TRUE",
+      "SET_EDITABLE_MESSAGE"
     ]),
     scrollToBottom() {
       let container = this.$refs.messages;
       container.scrollTop = container.scrollHeight;
     },
-    editMessage() {
-      console.log("edit");
+    editMessage(message) {
+      this.SET_MESSAGE_EDIT_TRUE();
+      this.SET_EDITABLE_MESSAGE(message);
+      bus.$emit("editMessage", message);
     },
-    deleteMessage() {
-      console.log("delete");
+    getChatId() {
+      let userId = firebase.auth().currentUser.uid;
+      let chatId = "";
+
+      if (this.currentRoom.id < userId) {
+        chatId = this.currentRoom.id + userId;
+      } else {
+        chatId = userId + this.currentRoom.id;
+      }
+      return chatId;
+    },
+    async deleteMessage(message) {
+      const chatId = this.getChatId();
+
+      await firebase
+        .firestore()
+        .collection("chats")
+        .doc(chatId)
+        .collection("messages")
+        .doc(message.id)
+        .delete()
+        .catch(error => {
+          this.$toast.error(error, {
+            duration: 4000,
+            position: "bottom"
+          });
+        });
     },
     openOptions(messageId) {
       this.isOptions = true;

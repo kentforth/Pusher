@@ -6,6 +6,8 @@ import "firebase/storage";
 const rooms = {
   namespaced: true,
   state: {
+    editableMessage: {},
+    isMessageEdit: false,
     roomMessages: [],
     isMessagesLoading: true,
     usersLastMessages: [],
@@ -38,10 +40,42 @@ const rooms = {
     },
     CLEAR_MESSAGES: state => {
       state.roomMessages = [];
+    },
+    DELETE_MESSAGE: (state, message) => {
+      let index = state.roomMessages.findIndex(function(m) {
+        return m.id === message.id;
+      });
+      if (index !== -1) state.roomMessages.splice(index, 1);
+    },
+    UPDATE_MESSAGE: (state, message) => {
+      console.log(message.id);
+      const messageIndex = state.roomMessages.findIndex(
+        obj => obj.id === message.id
+      );
+      state.roomMessages[messageIndex].createdAt = message.createdAt;
+      state.roomMessages[messageIndex].message = message.message;
+    },
+    SET_MESSAGE_EDIT_TRUE: state => {
+      state.isMessageEdit = true;
+    },
+    SET_MESSAGE_EDIT_FALSE: state => {
+      state.isMessageEdit = false;
+    },
+    SET_EDITABLE_MESSAGE: (state, message) => {
+      state.editableMessage = message;
     }
   },
 
   actions: {
+    SET_MESSAGE_EDIT_TRUE({ commit }) {
+      commit("SET_MESSAGE_EDIT_TRUE");
+    },
+    SET_MESSAGE_EDIT_FALSE({ commit }) {
+      commit("SET_MESSAGE_EDIT_FALSE");
+    },
+    SET_EDITABLE_MESSAGE({ commit }, message) {
+      commit("SET_EDITABLE_MESSAGE", message);
+    },
     CLEAR_MESSAGES({ commit }) {
       commit("CLEAR_MESSAGES");
     },
@@ -129,11 +163,19 @@ const rooms = {
             }
 
             if (change.type === "modified") {
-              commit("UPDATE_MESSAGE", doc.data());
+              message = {
+                id: doc.id,
+                ...doc.data()
+              };
+              commit("UPDATE_MESSAGE", message);
             }
 
             if (change.type === "removed") {
-              commit("UPDATE_MESSAGE", doc.data());
+              message = {
+                id: doc.id,
+                ...doc.data()
+              };
+              commit("DELETE_MESSAGE", message);
             }
           });
         });

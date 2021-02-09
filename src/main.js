@@ -80,6 +80,8 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
+export const bus = new Vue();
+
 let app;
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {

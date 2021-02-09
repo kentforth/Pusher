@@ -277,7 +277,10 @@ export default {
             });
         })
         .catch(error => {
-          console.log(error);
+          this.$toast.error(error, {
+            duration: 4000,
+            position: "bottom"
+          });
           this.isLoading = false;
         });
     }

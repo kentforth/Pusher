@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { bus } from "../main";
+
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
@@ -41,7 +43,7 @@ import data from "emoji-mart-vue-fast/data/all.json";
 import "emoji-mart-vue-fast/css/emoji-mart.css";
 import { Picker, EmojiIndex } from "emoji-mart-vue-fast";
 
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 let emojiIndex = new EmojiIndex(data);
 export default {
@@ -55,7 +57,7 @@ export default {
   }),
 
   computed: {
-    ...mapState("rooms", ["currentRoom"]),
+    ...mapState("rooms", ["currentRoom", "editableMessage", "isMessageEdit"]),
     ...mapState("userProfile", ["form"])
   },
 
@@ -66,7 +68,14 @@ export default {
     document.removeEventListener("click", this.hideEmoji);
     clearTimeout(this.timeout);
   },
+  created() {
+    bus.$on("editMessage", data => {
+      this.$refs.message.focus();
+      this.message = data.message;
+    });
+  },
   methods: {
+    ...mapActions("rooms", ["SET_MESSAGE_EDIT_FALSE"]),
     selectEmoji(e) {
       if (!e) {
         return false;
@@ -116,39 +125,61 @@ export default {
           chatId = userId + this.currentRoom.id;
         }
         this.message = "";
-        await firebase
-          .firestore()
-          .collection("chats")
-          .doc(chatId)
-          .collection("messages")
-          .add({
-            receiverId: this.currentRoom.id,
-            senderId: userId,
-            author: this.form.name,
-            message: newMessage,
-            createdAt: new Date()
-          })
-          .then(() => {
-            this.message = "";
-            chatId = userId + this.currentRoom.id;
-            firebase
-              .firestore()
-              .collection("userLastMessages")
-              .doc(chatId)
-              .set({
-                receiverId: this.currentRoom.id,
-                senderId: userId,
-                author: this.form.name,
-                message: newMessage,
-                createdAt: new Date()
+
+        if (!this.isMessageEdit) {
+          await firebase
+            .firestore()
+            .collection("chats")
+            .doc(chatId)
+            .collection("messages")
+            .add({
+              receiverId: this.currentRoom.id,
+              senderId: userId,
+              author: this.form.name,
+              message: newMessage,
+              createdAt: new Date()
+            })
+            .then(() => {
+              this.message = "";
+              chatId = userId + this.currentRoom.id;
+              firebase
+                .firestore()
+                .collection("userLastMessages")
+                .doc(chatId)
+                .set({
+                  receiverId: this.currentRoom.id,
+                  senderId: userId,
+                  author: this.form.name,
+                  message: newMessage,
+                  createdAt: new Date()
+                });
+            })
+            .then(() => {
+              this.SET_MESSAGE_EDIT_FALSE();
+            })
+            .catch(error => {
+              this.$toast.error(error, {
+                duration: 4000,
+                position: "bottom"
               });
-          })
-          .catch(error => {
-            this.$toast.error(error, {
-              duration: 4000,
-              position: "bottom"
             });
-          });
+        }
+        if (this.isMessageEdit) {
+          await firebase
+            .firestore()
+            .collection("chats")
+            .doc(chatId)
+            .collection("messages")
+            .doc(this.editableMessage.id)
+            .update({
+              author: this.editableMessage.author,
+              createdAt: new Date(),
+              message: newMessage,
+              receiverId: userId,
+              senderId: this.currentRoom.id
+            });
+          this.SET_MESSAGE_EDIT_FALSE();
+        }
       }
     }
   }
