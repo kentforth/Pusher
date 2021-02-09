@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :class="{ hide: !currentRoom.id }">
+  <div class="header" :class="{ hide: !currentRoom.id && roomId !== '' }">
     <div class="profile">
       <img
         :src="currentRoom.image"
@@ -21,8 +21,21 @@ import { mapState } from "vuex";
 
 export default {
   name: "ChatHeader",
+  data() {
+    return {
+      roomId: ""
+    };
+  },
+
   computed: {
     ...mapState("rooms", ["currentRoom"])
+  },
+  created() {
+    this.roomId = "";
+    const roomId = localStorage.getItem("roomId");
+    if (roomId) {
+      this.roomId = roomId;
+    }
   }
 };
 </script>
