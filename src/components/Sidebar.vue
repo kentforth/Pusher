@@ -83,9 +83,6 @@ export default {
                   .doc(userId)
                   .update({
                     status: "active"
-                  })
-                  .catch(error => {
-                    console.log(error);
                   });
               }
             });
@@ -123,11 +120,11 @@ export default {
             status: "inactive"
           })
           .then(() => {
-            firebase.auth().signOut();
-            localStorage.removeItem("roomId");
             this.CLEAR_MESSAGES();
             this.CLEAR_PROFILE();
             this.CLEAR_CURRENT_ROOM();
+            firebase.auth().signOut();
+            localStorage.removeItem("roomId");
           });
 
         this.$router.replace({ name: "signin" });

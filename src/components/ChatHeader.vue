@@ -11,13 +11,17 @@
       <span v-if="currentRoom.status === 'active'"></span>
     </div>
     <div class="navigation">
-      <font-awesome-icon icon="video" class="icon fa-video" />
+      <font-awesome-icon
+        icon="video"
+        class="icon fa-video"
+        @click="showVideoWindow"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "ChatHeader",
@@ -35,6 +39,12 @@ export default {
     const roomId = localStorage.getItem("roomId");
     if (roomId) {
       this.roomId = roomId;
+    }
+  },
+  methods: {
+    ...mapActions("video", ["SHOW_VIDEO_WINDOW"]),
+    showVideoWindow() {
+      this.SHOW_VIDEO_WINDOW();
     }
   }
 };

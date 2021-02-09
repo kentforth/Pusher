@@ -37,7 +37,10 @@ import {
   faVideo,
   faClock,
   faEllipsisV,
-  faTrashAlt
+  faTrashAlt,
+  faTimes,
+  faDesktop,
+  faPhoneSlash
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -68,7 +71,10 @@ library.add(
   faVideo,
   faClock,
   faEllipsisV,
-  faTrashAlt
+  faTrashAlt,
+  faTimes,
+  faDesktop,
+  faPhoneSlash
 );
 
 Vue.use(VueToast, {

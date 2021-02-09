@@ -76,6 +76,10 @@
       </div>
     </div>
 
+    <transition name="fadeVideo">
+      <VideoCall v-if="hasVideoCall" />
+    </transition>
+
     <ChatFooter />
   </div>
 </template>
@@ -94,10 +98,12 @@ import CurrentUserMessage from "./CurrentUserMessage";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import VideoCall from "./VideoCall";
 
 export default {
   name: "Chat",
   components: {
+    VideoCall,
     CurrentUserMessage,
     MessageOptionsModal,
     RoomMessage,
@@ -111,7 +117,7 @@ export default {
 
   mounted() {
     const roomId = localStorage.getItem("roomId");
-    if (roomId !== null) {
+    if (roomId) {
       this.CLEAR_MESSAGES();
       this.GET_CURRENT_ROOM(roomId);
       this.GET_ROOM_MESSAGES(roomId);
@@ -135,7 +141,8 @@ export default {
       "roomMessages",
       "currentRoom",
       "isMessagesLoading"
-    ])
+    ]),
+    ...mapState("video", ["hasVideoCall"])
   },
   methods: {
     ...mapActions("rooms", [
@@ -220,6 +227,14 @@ h1 {
   transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.fadeVideo-enter-active,
+.fadeVideo-leave-active {
+  transition: opacity 0.3s;
+}
+.fadeVideo-enter, .fadeVideo-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 </style>
