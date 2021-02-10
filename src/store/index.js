@@ -3,7 +3,6 @@ import Vuex from "vuex";
 
 import userProfile from "./modules/userProfile";
 import rooms from "./modules/rooms";
-import video from "./modules/video";
 
 Vue.use(Vuex);
 
@@ -21,8 +20,7 @@ export default new Vuex.Store({
   },
   modules: {
     userProfile: userProfile,
-    rooms: rooms,
-    video: video
+    rooms: rooms
   },
   getters: {}
 });

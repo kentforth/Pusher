@@ -2,7 +2,6 @@ module.exports = {
   devServer: {
     port: 4000
   },
-  runtimeCompiler: true,
   css: {
     loaderOptions: {
       sass: {

@@ -76,10 +76,6 @@
       </div>
     </div>
 
-    <transition name="fadeVideo">
-      <VideoCall v-if="hasVideoCall" />
-    </transition>
-
     <ChatFooter />
   </div>
 </template>
@@ -98,12 +94,10 @@ import CurrentUserMessage from "./CurrentUserMessage";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import VideoCall from "./VideoCall";
 
 export default {
   name: "Chat",
   components: {
-    VideoCall,
     CurrentUserMessage,
     MessageOptionsModal,
     RoomMessage,
