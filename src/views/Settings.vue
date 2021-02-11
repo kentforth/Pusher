@@ -6,7 +6,7 @@
       <img :src="profileImage" alt="profile-image" />
 
       <h2>{{ form.name }}</h2>
-      <div class="file-choser">
+      <div class="file-chooser">
         <image-uploader
           :maxWidth="600"
           :maxHeight="600"
@@ -299,7 +299,15 @@ export default {
 
     h1 {
       align-self: start;
+
+      @include responsive(phone) {
+        font-size: 1.3rem;
+      }
     }
+  }
+
+  @include responsive(phone) {
+    grid-template-rows: rem(50px) 0.3fr 1fr;
   }
 }
 
@@ -315,9 +323,14 @@ export default {
   img {
     object-fit: cover;
     border-radius: 50%;
-    height: 120px;
     object-position: center;
+    height: 120px;
     width: 120px;
+
+    @include responsive(phone) {
+      width: 80px;
+      height: 80px;
+    }
   }
 }
 
@@ -325,7 +338,7 @@ export default {
   display: none;
 }
 
-.file-choser {
+.file-chooser {
   position: absolute;
   top: 40%;
   left: 55%;
@@ -333,19 +346,31 @@ export default {
     border-radius: 50%;
     color: white;
     display: flex;
-    width: 40px;
-    height: 40px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     background-color: $dark;
     box-shadow: 4px 2px 11px -1px rgba(0, 0, 0, 0.74);
+
+    @include responsive(phone) {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  @include responsive(phone) {
+    top: 35%;
+    left: 55%;
   }
 }
 
 .fa-pen {
   color: $white;
   font-size: rem(14px);
+
+  @include responsive(phone) {
+    font-size: rem(10px);
+  }
 }
 
 .spinner {
@@ -364,6 +389,12 @@ export default {
     background-color: $dark-gray;
     padding: rem(15px);
   }
+
+  @include responsive(phone) {
+    margin-top: 0;
+    padding-bottom: 1em;
+    background-color: $dark;
+  }
 }
 
 .form {
@@ -374,13 +405,31 @@ export default {
   display: grid;
   grid-template-columns: 1fr rem(90px);
   grid-column-gap: rem(30px);
-  overflow: hidden;
+  overflow-y: hidden;
   transition: all 0.5s ease-out;
-  height: 300px;
+  height: 400px;
+
+  @include responsive(phone) {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  @include responsive(phone-small) {
+    height: 250px;
+  }
 }
 
 .form-full-height {
   height: 500px;
+
+  @include responsive(phone) {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  @include responsive(phone-small) {
+    height: 200px;
+  }
 }
 
 .input {
@@ -404,6 +453,12 @@ export default {
 
   input:focus {
     border: 3px solid $accent;
+  }
+
+  p {
+    @include responsive(phone-small) {
+      font-size: 1rem;
+    }
   }
 }
 

@@ -32,7 +32,16 @@ export default {
       height: rem(60px);
       border-radius: 50%;
       object-fit: cover;
+
+      @include responsive(phone) {
+        width: rem(45px);
+        height: rem(45px);
+      }
     }
+  }
+
+  @include responsive(phone) {
+    grid-column-gap: rem(5px);
   }
 }
 
@@ -52,6 +61,10 @@ export default {
       margin-left: rem(6px);
       font-weight: 600;
       font-size: rem(13px);
+
+      @include responsive(phone) {
+        font-size: rem(10px);
+      }
     }
   }
 
@@ -60,6 +73,10 @@ export default {
 
     @include responsive(tab-port) {
       font-size: rem(20px);
+
+      @include responsive(phone) {
+        font-size: rem(16px);
+      }
     }
   }
 }

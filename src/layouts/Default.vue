@@ -50,7 +50,10 @@ export default {
     width: 100%;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 100px;
-    overflow: hidden;
+  }
+
+  @include responsive(phone) {
+    grid-template-rows: 1fr 70px;
   }
 }
 
@@ -59,7 +62,6 @@ export default {
   padding: 1em 0.8em;
   width: rem(500px);
   height: 100vh;
-  overflow: hidden;
 
   @include responsive(tab-port) {
     height: 100%;

@@ -161,6 +161,10 @@ export default {
     align-content: center;
     z-index: 888;
   }
+
+  @include responsive(phone) {
+    padding: rem(10px);
+  }
 }
 
 .links {
@@ -204,6 +208,9 @@ export default {
 
 .sidebar img {
   width: 40%;
+  @include responsive(phone) {
+    width: 30%;
+  }
 }
 
 .sign-out {
@@ -218,5 +225,15 @@ export default {
   transform-origin: center;
   transform: rotate(180deg);
   cursor: pointer;
+
+  @include responsive(phone) {
+    font-size: rem(30px) !important;
+  }
+}
+
+.icon {
+  @include responsive(phone) {
+    font-size: rem(20px);
+  }
 }
 </style>

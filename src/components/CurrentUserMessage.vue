@@ -44,12 +44,20 @@ export default {
       margin-left: rem(6px);
       font-weight: 600;
       font-size: rem(13px);
+
+      @include responsive(phone) {
+        font-size: rem(10px);
+      }
     }
   }
 
   p {
     color: $white;
     font-size: rem(20px);
+
+    @include responsive(phone) {
+      font-size: rem(16px);
+    }
   }
 }
 

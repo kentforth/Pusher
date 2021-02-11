@@ -10,7 +10,19 @@
           <div class="input">
             <font-awesome-icon icon="envelope" class="icon fa-user" />
             <span></span>
-            <input type="email" placeholder="Email" v-model="form.email" />
+            <input
+              type="email"
+              placeholder="Email"
+              v-model="form.email"
+              v-model.trim="form.email"
+              :class="$v.form.email.$error ? 'input-error' : ''"
+            />
+            <p
+              class="error"
+              :class="$v.form.email.$error ? 'showError' : 'hideError'"
+            >
+              Name is required
+            </p>
           </div>
 
           <div class="input">
@@ -20,8 +32,15 @@
               type="password"
               placeholder="Password"
               autocomplete="on"
-              v-model="form.password"
+              v-model.trim="form.password"
+              :class="$v.form.password.$error ? 'input-error' : ''"
             />
+            <p
+              class="error"
+              :class="$v.form.password.$error ? 'showError' : 'hideError'"
+            >
+              Password is required
+            </p>
           </div>
 
           <div class="error" v-if="error">
@@ -32,6 +51,10 @@
             <Button type="submit">
               Sign in
             </Button>
+          </div>
+
+          <div class="error" v-if="error">
+            {{ error.message }}
           </div>
 
           <div class="sign-up">
@@ -61,6 +84,8 @@ import "firebase/auth";
 
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
+import { required, email } from "vuelidate/lib/validators";
+
 export default {
   name: "signin",
   components: { Form, Button, PulseLoader },
@@ -73,12 +98,23 @@ export default {
       password: ""
     }
   }),
+  validations: {
+    form: {
+      email: { required, email },
+      password: { required }
+    }
+  },
   computed: {
     ...mapState(["hasSpinner"])
   },
   methods: {
     ...mapActions(["SHOW_SPINNER", "HIDE_SPINNER"]),
     async submit() {
+      this.$v.form.$touch();
+      if (this.$v.form.$error) {
+        return;
+      }
+      this.error = "";
       this.SHOW_SPINNER();
       try {
         await firebase
@@ -114,10 +150,28 @@ h1 {
 
   img {
     width: 15%;
+
+    @include responsive(phone) {
+      width: 40%;
+    }
   }
 }
 
 .error {
   margin-top: 0.7em;
+}
+
+.spinner {
+  left: 40%;
+}
+
+.btn {
+  @include responsive(phone) {
+    margin-top: 1em;
+  }
+}
+
+.icon {
+  margin-top: 5px;
 }
 </style>

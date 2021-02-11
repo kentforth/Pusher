@@ -40,6 +40,10 @@ export default {
     @include responsive(tab-port) {
       font-size: rem(20px);
     }
+
+    @include responsive(phone) {
+      font-size: rem(14px);
+    }
   }
 }
 

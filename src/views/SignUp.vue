@@ -189,6 +189,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.sign-up {
+  @include responsive(phone) {
+    padding-bottom: 1em;
+  }
+}
+
 h1 {
   text-align: center;
 }
@@ -199,6 +205,24 @@ h1 {
 
   img {
     width: 15%;
+
+    @include responsive(phone) {
+      width: 40%;
+    }
   }
+
+  @include responsive(phone) {
+    margin: 2em auto 2em auto;
+  }
+}
+
+.btn {
+  @include responsive(phone) {
+    margin-top: 1em;
+  }
+}
+
+.icon {
+  margin-top: 5px;
 }
 </style>

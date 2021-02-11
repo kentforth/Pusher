@@ -125,6 +125,16 @@ export default {
   padding-bottom: 2em;
   overflow-y: scroll;
   max-height: 600px;
+
+  @include responsive(phone) {
+    padding: 0;
+    overflow-y: scroll;
+    max-height: 450px;
+  }
+
+  @include responsive(phone-small) {
+    max-height: 370px;
+  }
 }
 
 .no-user-found {
