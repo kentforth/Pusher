@@ -1,0 +1,14 @@
+@mixin responsive($breakpoint) {
+  @if $breakpoint == phone-small {
+    @media only screen and (max-width: 360px) {@content}
+  }
+
+  @if $breakpoint == phone {
+    @media only screen and (max-width: 393px) {@content}
+  }
+
+  @if $breakpoint == tab-port {
+    @media only screen and (max-width: 768px) {@content}
+  }
+
+}

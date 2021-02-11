@@ -40,7 +40,8 @@ import {
   faTrashAlt,
   faTimes,
   faDesktop,
-  faPhoneSlash
+  faPhoneSlash,
+  faChevronLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -74,7 +75,8 @@ library.add(
   faTrashAlt,
   faTimes,
   faDesktop,
-  faPhoneSlash
+  faPhoneSlash,
+  faChevronLeft
 );
 
 Vue.use(VueToast, {

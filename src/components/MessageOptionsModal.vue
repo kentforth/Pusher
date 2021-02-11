@@ -35,6 +35,12 @@ export default {
   justify-content: space-between;
   width: 100%;
   padding: rem(5px) rem(20px);
+
+  p {
+    @include responsive(tab-port) {
+      font-size: rem(20px);
+    }
+  }
 }
 
 .modal-item:hover {
@@ -59,5 +65,11 @@ export default {
 
 .modal-active-current-user {
   right: 0;
+}
+
+.icon {
+  @include responsive(tab-port) {
+    margin-left: rem(20px);
+  }
 }
 </style>

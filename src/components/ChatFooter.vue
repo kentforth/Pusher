@@ -263,6 +263,11 @@ export default {
   position: fixed;
   top: rem(400px);
   right: rem(200px);
+
+  @include responsive(tab-port) {
+    top: rem(480px);
+    right: rem(130px);
+  }
 }
 
 .row {

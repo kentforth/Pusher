@@ -289,6 +289,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.settings {
+  @include responsive(tab-port) {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: rem(100px) 0.5fr 1fr;
+    align-items: center;
+
+    h1 {
+      align-self: start;
+    }
+  }
+}
+
 .profile-image {
   position: relative;
   margin: 0 auto;

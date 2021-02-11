@@ -43,11 +43,13 @@ export default {
     span {
       margin-left: rem(6px);
       font-weight: 600;
+      font-size: rem(13px);
     }
   }
 
   p {
     color: $white;
+    font-size: rem(20px);
   }
 }
 

@@ -1,6 +1,12 @@
 <template>
   <div class="header" :class="{ hide: !currentRoom.id && roomId !== '' }">
     <div class="profile">
+      <font-awesome-icon
+        icon="chevron-left"
+        class="icon fa-arrow-left"
+        @click="SET_ROOM_CHOSEN_FALSE()"
+      />
+
       <img
         :src="currentRoom.image"
         alt="profile image"
@@ -14,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "ChatHeader",
@@ -26,6 +32,9 @@ export default {
 
   computed: {
     ...mapState("rooms", ["currentRoom"])
+  },
+  methods: {
+    ...mapActions("rooms", ["SET_ROOM_CHOSEN_FALSE"])
   },
   created() {
     this.roomId = "";
@@ -88,5 +97,11 @@ export default {
   pointer-events: none;
   cursor: default;
   transform: translateY(-10px);
+}
+
+.fa-arrow-left {
+  font-size: 2rem;
+  color: $gray;
+  margin: 0 rem(30px) 0 0;
 }
 </style>

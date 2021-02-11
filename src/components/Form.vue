@@ -14,6 +14,10 @@ export default {
 .form {
   width: 40%;
   margin: 0 auto;
+
+  @include responsive(tab-port) {
+    width: 80%;
+  }
 }
 
 .input {

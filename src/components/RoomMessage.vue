@@ -19,10 +19,10 @@ export default {
 .room-message {
   transition: all 0.6s ease;
   display: grid;
-  grid-template-columns: 60px 1fr 0.3fr;
+  grid-template-columns: 60px 1fr;
   grid-column-gap: rem(15px);
   margin-top: 1em;
-  max-width: 45%;
+  max-width: 50%;
   width: max-content;
 
   &__image {
@@ -51,11 +51,16 @@ export default {
     span {
       margin-left: rem(6px);
       font-weight: 600;
+      font-size: rem(13px);
     }
   }
 
   p {
     color: $white;
+
+    @include responsive(tab-port) {
+      font-size: rem(20px);
+    }
   }
 }
 

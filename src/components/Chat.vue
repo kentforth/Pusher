@@ -1,5 +1,5 @@
 <template>
-  <div class="chat">
+  <div class="chat" :class="chatClass">
     <ChatHeader />
     <div class="messages" ref="messages">
       <h1 v-if="!currentRoom.id">No chat selected</h1>
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { bus } from "../main";
+import { bus } from "@/main";
 
 import ChatFooter from "./ChatFooter";
 import ChatHeader from "./ChatHeader";
@@ -134,9 +134,19 @@ export default {
       "currentRoom",
       "roomMessages",
       "currentRoom",
-      "isMessagesLoading"
+      "isMessagesLoading",
+      "selectedRoom"
     ]),
-    ...mapState("video", ["hasVideoCall"])
+    chatClass() {
+      if (this.selectedRoom === "selected") {
+        return "show-chat";
+      }
+      if (this.selectedRoom === "none") {
+        return "hide-chat";
+      } else {
+        return "";
+      }
+    }
   },
   methods: {
     ...mapActions("rooms", [
@@ -200,9 +210,20 @@ export default {
   width: 100%;
   height: 100vh;
   display: grid;
+  background-color: $dark;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
+
+  @include responsive(tab-port) {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    transform: translateX(100%);
+  }
 }
 
 .messages {
@@ -230,5 +251,15 @@ h1 {
 }
 .fadeVideo-enter, .fadeVideo-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.show-chat {
+  transform: translateX(0);
+  transition: all 0.5s ease;
+}
+
+.hide-chat {
+  transform: translateX(100%);
+  transition: all 0.5s ease;
 }
 </style>

@@ -151,6 +151,16 @@ export default {
   grid-template-rows: 200px 1fr;
   justify-content: center;
   justify-items: center;
+
+  @include responsive(tab-port) {
+    grid-row: 2/2;
+    width: 100%;
+    height: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    align-content: center;
+    z-index: 888;
+  }
 }
 
 .links {
@@ -158,12 +168,21 @@ export default {
   grid-template-columns: 1fr;
   grid-row-gap: 1em;
   justify-content: center;
+
+  @include responsive(tab-port) {
+    display: flex;
+  }
 }
 
 .logo {
   display: flex;
   justify-content: center;
   align-self: start;
+
+  @include responsive(tab-port) {
+    align-self: center;
+    justify-self: flex-start;
+  }
 }
 
 .link-item a {
@@ -185,6 +204,13 @@ export default {
 
 .sidebar img {
   width: 40%;
+}
+
+.sign-out {
+  @include responsive(tab-port) {
+    justify-self: flex-end;
+    margin-right: rem(25px);
+  }
 }
 
 .fa-sign-out {

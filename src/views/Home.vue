@@ -90,7 +90,8 @@ export default {
       "GET_CURRENT_ROOM",
       "GET_ROOM_MESSAGES",
       "CLEAR_MESSAGES",
-      "GET_USERS_LAST_MESSAGES"
+      "GET_USERS_LAST_MESSAGES",
+      "SET_ROOM_CHOSEN_TRUE"
     ]),
     ...mapActions("userProfile", ["GET_USERS"]),
 
@@ -100,11 +101,23 @@ export default {
       this.CLEAR_MESSAGES();
       this.GET_CURRENT_ROOM(userId);
       this.GET_ROOM_MESSAGES(userId);
+      this.SET_ROOM_CHOSEN_TRUE();
     }
   }
 };
 </script>
 <style scoped lang="scss">
+.home {
+  @include responsive(tab-port) {
+    height: 100%;
+  }
+}
+
+.container {
+  @include responsive(tab-port) {
+    width: 100%;
+  }
+}
 .chat-list {
   margin-top: 2em;
   padding-bottom: 2em;

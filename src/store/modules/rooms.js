@@ -6,6 +6,7 @@ import "firebase/storage";
 const rooms = {
   namespaced: true,
   state: {
+    selectedRoom: "default",
     editableMessage: {},
     isMessageEdit: false,
     roomMessages: [],
@@ -19,6 +20,12 @@ const rooms = {
     }
   },
   mutations: {
+    SET_ROOM_CHOSEN_TRUE: state => {
+      state.selectedRoom = "selected";
+    },
+    SET_ROOM_CHOSEN_FALSE: state => {
+      state.selectedRoom = "none";
+    },
     SET_CURRENT_ROOM: (state, user) => {
       state.currentRoom = {
         id: user.id,
@@ -67,6 +74,12 @@ const rooms = {
   },
 
   actions: {
+    SET_ROOM_CHOSEN_TRUE({ commit }) {
+      commit("SET_ROOM_CHOSEN_TRUE");
+    },
+    SET_ROOM_CHOSEN_FALSE({ commit }) {
+      commit("SET_ROOM_CHOSEN_FALSE");
+    },
     SET_MESSAGE_EDIT_TRUE({ commit }) {
       commit("SET_MESSAGE_EDIT_TRUE");
     },

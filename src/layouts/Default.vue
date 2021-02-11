@@ -42,6 +42,16 @@ export default {
 <style scoped lang="scss">
 .default {
   display: flex;
+
+  @include responsive(tab-port) {
+    display: grid;
+    height: 100vh;
+    position: fixed;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 100px;
+    overflow: hidden;
+  }
 }
 
 .view {
@@ -49,5 +59,13 @@ export default {
   padding: 1em 0.8em;
   width: rem(500px);
   height: 100vh;
+  overflow: hidden;
+
+  @include responsive(tab-port) {
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    padding: 1em 1.5em;
+  }
 }
 </style>
