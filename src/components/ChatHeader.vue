@@ -100,8 +100,13 @@ export default {
 }
 
 .fa-arrow-left {
+  display: none;
   font-size: 2rem;
   color: $gray;
   margin: 0 rem(30px) 0 0;
+
+  @include responsive(tab-port) {
+    display: block;
+  }
 }
 </style>

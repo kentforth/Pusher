@@ -101,7 +101,9 @@ export default {
       this.CLEAR_MESSAGES();
       this.GET_CURRENT_ROOM(userId);
       this.GET_ROOM_MESSAGES(userId);
-      this.SET_ROOM_CHOSEN_TRUE();
+      if (window.innerWidth <= 800) {
+        this.SET_ROOM_CHOSEN_TRUE();
+      }
     }
   }
 };
