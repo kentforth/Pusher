@@ -344,6 +344,9 @@ export default {
   left: 55%;
   label {
     border-radius: 50%;
+    width: 40px;
+    height: 40px;
+
     color: white;
     display: flex;
     justify-content: center;
